@@ -10,5 +10,5 @@ import { RestaurantCardInterface } from '../../interfaces/restaurant-card.interf
   styleUrls: ['./restaurant-card.component.css'],
 })
 export class RestaurantCardComponent {
-  @Input() restaurants!: RestaurantCardInterface[];
+  @Input() restaurant!: RestaurantCardInterface;
 }

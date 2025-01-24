@@ -1,5 +1,9 @@
 <main class="main">
-  <app-restaurant-card [restaurants]="restaurants"></app-restaurant-card>
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+    @for (restaurant of restaurants; track restaurant) {
+      <app-restaurant-card [restaurant]="restaurant" />
+    }
+  </div>
 </main>
 
 <router-outlet />
