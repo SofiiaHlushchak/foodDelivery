@@ -2,10 +2,16 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PrimaryCardComponent } from './shared/components/primary-card/primary-card.component';
+import { SecondaryCardComponent } from './shared/components/secondary-card/secondary-card.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatSlideToggleModule, PrimaryCardComponent],
+  imports: [
+    RouterOutlet,
+    MatSlideToggleModule,
+    PrimaryCardComponent,
+    SecondaryCardComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

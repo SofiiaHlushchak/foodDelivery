@@ -1,0 +1,93 @@
+<div class="w-40 overflow-hidden rounded-3xl bg-white shadow-lg">
+  <div class="relative" [ngClass]="{ 'px-3 pt-3': !config.displayPrice }">
+    <img
+      [src]="data.imageUrl"
+      alt="{{ data.name }}"
+      [ngClass]="{
+        'h-14 w-14 rounded-xl': !config.displayPrice,
+        'h-36 w-full rounded-3xl object-cover': config.displayPrice,
+      }" />
+
+    <div
+      *ngIf="config.displayPrice"
+      class="absolute top-3 left-3 rounded-3xl bg-white p-2 text-sm">
+      <span class="font-bold text-black">{{ data.price | currency }}</span>
+    </div>
+
+    <div
+      *ngIf="
+        !config.displayPrice &&
+        data.rating !== undefined &&
+        data.reviews !== undefined
+      "
+      class="absolute top-1.5 left-14 rounded-lg bg-[#FFC529] p-1 text-[9px] text-white shadow">
+      {{ data.rating }}
+    </div>
+
+    <div
+      *ngIf="
+        config.displayPrice &&
+        data.rating !== undefined &&
+        data.reviews !== undefined
+      "
+      class="absolute bottom-0 left-3 transform translate-y-1/2 rounded-3xl bg-white p-2 text-[7px] shadow-lg">
+      <span class="font-bold text-black">{{ data.rating }}</span>
+      <i class="fas fa-star ml-1 text-yellow-500"></i>
+      <span class="ml-1 text-gray-500">
+        ({{ data.reviews | formatRatingCount }})
+      </span>
+    </div>
+
+    <button
+      [ngClass]="{
+        'bg-[#FE724C]': data.isFavorite,
+        'bg-[#FFFFFF33]': !data.isFavorite,
+      }"
+      class="absolute top-3 right-3 flex rounded-full p-2 shadow-md hover:bg-gray-200 focus:outline-none">
+      <i class="fas fa-heart text-[#ECDCDC]"></i>
+    </button>
+  </div>
+
+  <div class="p-3">
+    <h3 class="text-base font-bold" [ngClass]="{ 'mt-2': config.displayPrice }">
+      {{ data.name }}
+    </h3>
+
+    <div
+      *ngIf="config.displayIngredients"
+      class="my-2 flex items-center space-x-2 text-xs text-gray-600">
+      <span>{{ data.ingredients }}</span>
+    </div>
+
+    <div
+      *ngIf="config.displayDeliveryInfo"
+      class="my-2 flex items-center space-x-2 text-xs text-gray-600">
+      <div class="flex items-center">
+        <img
+          src="../../../../assets/icons/delivery-free.svg"
+          alt="Delivery Free"
+          class="mr-1 h-4 w-4" />
+        <span *ngIf="data.isDeliveryFree">free</span>
+        <span *ngIf="!data.isDeliveryFree">
+          {{ '$' + data.deliveryCost }}
+        </span>
+      </div>
+
+      <div class="flex items-center">
+        <img
+          src="../../../../assets/icons/delivery-time.svg"
+          alt="Delivery Time"
+          class="mr-1 h-4 w-4" />
+        <span>{{ data.deliveryTime }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="config.displayCategories" class="my-2 flex flex-wrap gap-2">
+      <span
+        *ngFor="let category of data.categories"
+        class="rounded-md bg-gray-100 px-2 py-1 text-xs font-medium uppercase text-gray-600">
+        {{ category }}
+      </span>
+    </div>
+  </div>
+</div>
