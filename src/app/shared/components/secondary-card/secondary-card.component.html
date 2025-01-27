@@ -60,24 +60,26 @@
     </div>
 
     <div
-      *ngIf="config.displayDeliveryInfo"
+      *ngIf="config.displayDeliveryPrice || config.displayDeliveryTime"
       class="my-2 flex items-center space-x-2 text-xs text-gray-600">
-      <div class="flex items-center">
+      <div class="flex items-center" *ngIf="config.displayDeliveryPrice">
         <img
           src="../../../../assets/icons/delivery-free.svg"
           alt="Delivery Free"
           class="mr-1 h-4 w-4" />
+
         <span *ngIf="data.isDeliveryFree">free</span>
         <span *ngIf="!data.isDeliveryFree">
           {{ '$' + data.deliveryCost }}
         </span>
       </div>
 
-      <div class="flex items-center">
+      <div class="flex items-center" *ngIf="config.displayDeliveryTime">
         <img
           src="../../../../assets/icons/delivery-time.svg"
           alt="Delivery Time"
           class="mr-1 h-4 w-4" />
+
         <span>{{ data.deliveryTime }}</span>
       </div>
     </div>
