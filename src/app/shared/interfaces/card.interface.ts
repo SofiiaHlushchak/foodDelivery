@@ -1,7 +1,10 @@
-export interface RestaurantCardInterface {
+export interface CardInterface {
   name: string;
-  rating: number;
-  reviews: number;
+  imageUrl: string;
+  rating?: number;
+  reviews?: number;
+  price?: number;
+  ingredients?: string;
   isDeliveryFree?: boolean;
   deliveryCost?: number;
   deliveryTime?: string;

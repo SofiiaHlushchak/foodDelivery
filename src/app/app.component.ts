@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { RestaurantCardComponent } from './shared/components/restaurant-card/restaurant-card.component';
+import { PrimaryCardComponent } from './shared/components/primary-card/primary-card.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatSlideToggleModule, RestaurantCardComponent],
+  imports: [RouterOutlet, MatSlideToggleModule, PrimaryCardComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -14,6 +14,7 @@ export class AppComponent {
   restaurants = [
     {
       name: 'McDonalds',
+      imageUrl: '../../../../assets/images/restaurant.png',
       rating: 4.5,
       reviews: 134,
       isDeliveryFree: true,
@@ -23,6 +24,7 @@ export class AppComponent {
     },
     {
       name: 'Burger King',
+      imageUrl: '../../../../assets/images/restaurant.png',
       rating: 4.2,
       reviews: 934,
       isFavorite: false,
@@ -32,12 +34,33 @@ export class AppComponent {
     },
     {
       name: 'KFC',
+      imageUrl: '../../../../assets/images/restaurant.png',
       rating: 4.3,
       reviews: 150,
       isFavorite: false,
       isDeliveryFree: true,
       deliveryTime: '10-15 mins',
       categories: ['Burger', 'chicken', 'fast food'],
+    },
+  ];
+  dishes = [
+    {
+      name: 'Chicken Hawaiian',
+      imageUrl: '../../../../assets/images/dish.png',
+      price: 10.35,
+      ingredients: 'Chicken, Cheese and pineapple',
+      rating: 4.5,
+      reviews: 134,
+      isFavorite: true,
+    },
+    {
+      name: 'Red n hot pizza',
+      imageUrl: '../../../../assets/images/dish.png',
+      price: 3.49,
+      ingredients: 'Spicy chicken, beef',
+      rating: 4.5,
+      reviews: 134,
+      isFavorite: false,
     },
   ];
 }
