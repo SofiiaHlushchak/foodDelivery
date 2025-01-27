@@ -16,8 +16,7 @@
       [ngClass]="{
         'top-3 text-sm': !config.displayPrice,
         'bottom-0 transform translate-y-1/2 text-[10px]': config.displayPrice,
-      }"
-      *ngIf="data.rating !== undefined && data.reviews !== undefined">
+      }">
       <span class="font-bold text-black">{{ data.rating }}</span>
       <i class="fas fa-star ml-1 text-yellow-500"></i>
       <span class="ml-1 text-gray-500">
@@ -50,8 +49,8 @@
 
     <div
       class="my-2 flex items-center text-sm text-gray-600 space-x-2"
-      *ngIf="config.displayDeliveryPrice || config.displayDeliveryTime">
-      <div class="flex items-center" *ngIf="config.displayDeliveryPrice">
+      *ngIf="config.displayDeliveryInfo">
+      <div class="flex items-center">
         <img
           src="../../../../assets/icons/delivery-free.svg"
           alt="Delivery Free"
@@ -62,7 +61,7 @@
         </span>
       </div>
 
-      <div class="flex items-center" *ngIf="config.displayDeliveryTime">
+      <div class="flex items-center">
         <img
           src="../../../../assets/icons/delivery-time.svg"
           alt="Delivery Time"

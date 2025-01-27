@@ -2,7 +2,7 @@ export interface CardInterface {
   name: string;
   imageUrl: string;
   rating?: number;
-  reviews?: number;
+  reviews: number;
   price?: number;
   ingredients?: string;
   isDeliveryFree?: boolean;
