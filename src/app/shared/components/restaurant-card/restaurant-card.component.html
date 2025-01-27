@@ -43,7 +43,7 @@
     <span class="font-bold text-black">{{ restaurant.rating }}</span>
     <i class="fas fa-star ml-1 text-yellow-500"></i>
     <span class="ml-1 text-xs text-gray-500">
-      ( {{ restaurant.reviews }}+ )
+      ( {{ restaurant.reviews | formatRatingCount }} )
     </span>
   </div>
 
