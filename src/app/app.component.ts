@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PrimaryCardComponent } from './shared/components/primary-card/primary-card.component';
 import { SecondaryCardComponent } from './shared/components/secondary-card/secondary-card.component';
+import { CardConfigInterface } from './shared/interfaces/card-config.interface';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,14 @@ import { SecondaryCardComponent } from './shared/components/secondary-card/secon
 })
 export class AppComponent {
   title = 'food-delivery';
+  configRestaurant: CardConfigInterface = {
+    displayDeliveryInfo: true,
+    displayCategories: true,
+  };
+  configDish: CardConfigInterface = {
+    displayPrice: true,
+    displayIngredients: true,
+  };
   restaurants = [
     {
       name: 'McDonalds',

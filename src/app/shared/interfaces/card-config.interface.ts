@@ -1,7 +1,6 @@
 export interface CardConfigInterface {
   displayPrice?: boolean;
   displayIngredients?: boolean;
-  displayDeliveryTime?: boolean;
-  displayDeliveryPrice?: boolean;
+  displayDeliveryInfo?: boolean;
   displayCategories?: boolean;
 }
