@@ -1,7 +1,33 @@
 <main class="main">
-  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+  <div
+    class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4">
+    <h2 class="text-2xl font-bold mb-4">Restaurants</h2>
     @for (restaurant of restaurants; track restaurant) {
-      <app-restaurant-card [restaurant]="restaurant" />
+      <app-primary-card [data]="restaurant" [config]="configRestaurant" />
+    }
+  </div>
+
+  <div
+    class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4">
+    <h2 class="text-2xl font-bold mb-4">Restaurants (secondary-card)</h2>
+    @for (restaurant of restaurants; track restaurant) {
+      <app-secondary-card [data]="restaurant" [config]="configRestaurant" />
+    }
+  </div>
+
+  <div
+    class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4">
+    <h2 class="text-2xl font-bold mb-4">Dishes</h2>
+    @for (dish of dishes; track dish) {
+      <app-primary-card [data]="dish" [config]="configDish" />
+    }
+  </div>
+
+  <div
+    class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4">
+    <h2 class="text-2xl font-bold mb-4">Dishes (secondary-card)</h2>
+    @for (dish of dishes; track dish) {
+      <app-secondary-card [data]="dish" [config]="configDish" />
     }
   </div>
 </main>
