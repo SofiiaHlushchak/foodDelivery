@@ -15,7 +15,7 @@ export class AppComponent {
     {
       name: 'McDonalds',
       rating: 4.5,
-      reviews: 120,
+      reviews: 134,
       isDeliveryFree: true,
       isFavorite: true,
       deliveryTime: '10-15 mins',
@@ -24,7 +24,7 @@ export class AppComponent {
     {
       name: 'Burger King',
       rating: 4.2,
-      reviews: 98,
+      reviews: 934,
       isFavorite: false,
       deliveryCost: 2,
       deliveryTime: '10-15 mins',
