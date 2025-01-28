@@ -25,6 +25,9 @@
     </div>
 
     <button
+      (click)="
+        toggleFavorite(data.id, config.displayPrice ? 'dish' : 'restaurant')
+      "
       [ngClass]="{
         'bg-[#FE724C]': data.isFavorite,
         'bg-[#FFFFFF33]': !data.isFavorite,

@@ -1,22 +1,18 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { Component, OnInit } from '@angular/core';
+import { RestaurantsService } from './services/restaurants.service';
+import { CardConfigInterface } from './shared/interfaces/card-config.interface';
+import { CardInterface } from './shared/interfaces/card.interface';
 import { PrimaryCardComponent } from './shared/components/primary-card/primary-card.component';
 import { SecondaryCardComponent } from './shared/components/secondary-card/secondary-card.component';
-import { CardConfigInterface } from './shared/interfaces/card-config.interface';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    MatSlideToggleModule,
-    PrimaryCardComponent,
-    SecondaryCardComponent,
-  ],
+  imports: [PrimaryCardComponent, SecondaryCardComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  styleUrls: ['./app.component.scss'],
+  providers: [RestaurantsService],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'food-delivery';
   configRestaurant: CardConfigInterface = {
     displayDeliveryInfo: true,
@@ -26,56 +22,17 @@ export class AppComponent {
     displayPrice: true,
     displayIngredients: true,
   };
-  restaurants = [
-    {
-      name: 'McDonalds',
-      imageUrl: '../../../../assets/images/restaurant.png',
-      rating: 4.5,
-      reviews: 134,
-      isDeliveryFree: true,
-      isFavorite: true,
-      deliveryTime: '10-15 mins',
-      categories: ['Burger', 'chicken', 'fast food'],
-    },
-    {
-      name: 'Burger King',
-      imageUrl: '../../../../assets/images/restaurant.png',
-      rating: 4.2,
-      reviews: 934,
-      isFavorite: false,
-      deliveryCost: 2,
-      deliveryTime: '10-15 mins',
-      categories: ['Burger', 'chicken', 'fast food'],
-    },
-    {
-      name: 'KFC',
-      imageUrl: '../../../../assets/images/restaurant.png',
-      rating: 4.3,
-      reviews: 150,
-      isFavorite: false,
-      isDeliveryFree: true,
-      deliveryTime: '10-15 mins',
-      categories: ['Burger', 'chicken', 'fast food'],
-    },
-  ];
-  dishes = [
-    {
-      name: 'Chicken Hawaiian',
-      imageUrl: '../../../../assets/images/dish.png',
-      price: 10.35,
-      ingredients: 'Chicken, Cheese and pineapple',
-      rating: 4.5,
-      reviews: 134,
-      isFavorite: true,
-    },
-    {
-      name: 'Red n hot pizza',
-      imageUrl: '../../../../assets/images/dish.png',
-      price: 3.49,
-      ingredients: 'Spicy chicken, beef',
-      rating: 4.5,
-      reviews: 134,
-      isFavorite: false,
-    },
-  ];
+  restaurants: CardInterface[] = [];
+  dishes: CardInterface[] = [];
+
+  constructor(private restaurantsService: RestaurantsService) {}
+
+  ngOnInit() {
+    this.restaurants = this.restaurantsService.getRestaurants();
+    this.dishes = this.restaurantsService.getDishes();
+  }
+
+  toggleFavorite(itemId: number, type: string) {
+    this.restaurantsService.toggleFavorite(itemId, type);
+  }
 }
