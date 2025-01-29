@@ -1,83 +1,37 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { CardInterface } from '../shared/interfaces/card.interface';
+import { environment } from '../environments/environment';
+import { CardTypeEnum } from '../shared/enums/card-type.enum';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RestaurantsService {
-  private restaurants = [
-    {
-      id: 1,
-      name: 'McDonalds',
-      imageUrl: '../../../../assets/images/restaurant.png',
-      rating: 4.5,
-      reviews: 134,
-      isDeliveryFree: true,
-      isFavorite: true,
-      deliveryTime: '10-15 mins',
-      categories: ['Burger', 'chicken', 'fast food'],
-    },
-    {
-      id: 2,
-      name: 'Burger King',
-      imageUrl: '../../../../assets/images/restaurant.png',
-      rating: 4.2,
-      reviews: 934,
-      isFavorite: false,
-      deliveryCost: 2,
-      deliveryTime: '10-15 mins',
-      categories: ['Burger', 'chicken', 'fast food'],
-    },
-    {
-      id: 3,
-      name: 'KFC',
-      imageUrl: '../../../../assets/images/restaurant.png',
-      rating: 4.3,
-      reviews: 150,
-      isFavorite: false,
-      isDeliveryFree: true,
-      deliveryTime: '10-15 mins',
-      categories: ['Burger', 'chicken', 'fast food'],
-    },
-  ];
+  private baseUrl = environment.API_URL;
 
-  private dishes = [
-    {
-      id: 1,
-      name: 'Chicken Hawaiian',
-      imageUrl: '../../../../assets/images/dish.png',
-      price: 10.35,
-      ingredients: 'Chicken, Cheese and pineapple',
-      rating: 4.5,
-      reviews: 134,
-      isFavorite: true,
-    },
-    {
-      id: 2,
-      name: 'Red n hot pizza',
-      imageUrl: '../../../../assets/images/dish.png',
-      price: 3.49,
-      ingredients: 'Spicy chicken, beef',
-      rating: 4.5,
-      reviews: 134,
-      isFavorite: false,
-    },
-  ];
+  constructor(private http: HttpClient) {}
 
-  getRestaurants() {
-    return this.restaurants;
+  getRestaurants(): Observable<CardInterface[]> {
+    return this.http.get<CardInterface[]>(`${this.baseUrl}/restaurants`);
   }
 
-  getDishes() {
-    return this.dishes;
+  getDishes(): Observable<CardInterface[]> {
+    return this.http.get<CardInterface[]>(`${this.baseUrl}/dishes`);
   }
 
-  toggleFavorite(itemId: number, type: string) {
-    const listItems = type === 'restaurant' ? this.restaurants : this.dishes;
-
+  toggleFavourite(
+    itemId: string,
+    type: CardTypeEnum,
+    restaurants: CardInterface[],
+    dishes: CardInterface[]
+  ) {
+    const listItems = type === CardTypeEnum.Restaurant ? restaurants : dishes;
     const item = listItems.find(i => i.id === itemId);
 
     if (item) {
-      item.isFavorite = !item.isFavorite;
+      item.isFavourite = !item.isFavourite;
     }
   }
 }

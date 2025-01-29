@@ -1,7 +1,7 @@
 <div class="relative w-80 overflow-hidden rounded-3xl bg-white shadow-lg">
   <div class="relative">
     <img
-      [src]="data.imageUrl"
+      [src]="data.imgUrl"
       alt="{{ data.name }}"
       class="h-44 w-full rounded-3xl object-cover" />
 
@@ -19,21 +19,24 @@
       }">
       <span class="font-bold text-black">{{ data.rating }}</span>
       <i class="fas fa-star ml-1 text-secondary"></i>
-      <span class="ml-1 text-gray-manatee">
-        ({{ data.reviews | formatRatingCount }})
+      <span class="ml-1 text-gray-manatee" *ngIf="data.feedbacks">
+        ({{ data.feedbacks | formatRatingCount }})
       </span>
     </div>
 
     <button
       (click)="
-        toggleFavorite(data.id, config.displayPrice ? 'dish' : 'restaurant')
+        onToggleFavorite(
+          data.id,
+          config.displayPrice ? CardTypeEnum.Dish : CardTypeEnum.Restaurant
+        )
       "
       [ngClass]="{
-        'bg-primary': data.isFavorite,
-        'bg-whiteTransparent backdrop-blur-5xl': !data.isFavorite,
+        'bg-primary': data.isFavourite,
+        'bg-whiteTransparent backdrop-blur-5xl': !data.isFavourite,
       }"
       class="absolute right-3 top-3 flex rounded-full p-2 shadow-md focus:outline-none">
-      <i class="fas fa-heart text-white"></i>
+      <i class="fas fa-heart text-pink-light"></i>
     </button>
   </div>
 
@@ -49,7 +52,7 @@
     <div
       class="my-2 flex items-center space-x-2 text-sm text-gray-abbey"
       *ngIf="config.displayIngredients">
-      <span>{{ data.ingredients }}</span>
+      <span>{{ data.ingredients?.join(', ') }}</span>
     </div>
 
     <div
@@ -60,10 +63,11 @@
           src="../../../../assets/icons/delivery-free.svg"
           alt="Delivery Free"
           class="mr-1 h-4 w-4" />
-        <span *ngIf="data.isDeliveryFree">free delivery</span>
-        <span *ngIf="!data.isDeliveryFree">
-          {{ '$' + data.deliveryCost + ' delivery' }}
-        </span>
+        @if (data.delivery.cost) {
+          <span>{{ '$' + data.delivery.cost + ' delivery' }}</span>
+        } @else {
+          <span>free</span>
+        }
       </div>
 
       <div class="flex items-center">
@@ -71,7 +75,7 @@
           src="../../../../assets/icons/delivery-time.svg"
           alt="Delivery Time"
           class="mr-1 h-4 w-4" />
-        <span>{{ data.deliveryTime }}</span>
+        <span>{{ data.delivery.time }} mins</span>
       </div>
     </div>
 

@@ -3,7 +3,10 @@
     class="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
     <h2 class="mb-4 text-2xl font-bold">Restaurants</h2>
     @for (restaurant of restaurants; track restaurant) {
-      <app-primary-card [data]="restaurant" [config]="configRestaurant" />
+      <app-primary-card
+        [data]="restaurant"
+        [config]="configRestaurant"
+        (toggleFavorite)="onToggleFavourite($event)" />
     }
   </div>
 
@@ -11,7 +14,10 @@
     class="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
     <h2 class="mb-4 text-2xl font-bold">Restaurants (secondary-card)</h2>
     @for (restaurant of restaurants; track restaurant) {
-      <app-secondary-card [data]="restaurant" [config]="configRestaurant" />
+      <app-secondary-card
+        [data]="restaurant"
+        [config]="configRestaurant"
+        (toggleFavorite)="onToggleFavourite($event)" />
     }
   </div>
 
@@ -19,7 +25,10 @@
     class="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
     <h2 class="mb-4 text-2xl font-bold">Dishes</h2>
     @for (dish of dishes; track dish) {
-      <app-primary-card [data]="dish" [config]="configDish" />
+      <app-primary-card
+        [data]="dish"
+        [config]="configDish"
+        (toggleFavorite)="onToggleFavourite($event)" />
     }
   </div>
 
@@ -27,7 +36,10 @@
     class="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
     <h2 class="mb-4 text-2xl font-bold">Dishes (secondary-card)</h2>
     @for (dish of dishes; track dish) {
-      <app-secondary-card [data]="dish" [config]="configDish" />
+      <app-secondary-card
+        [data]="dish"
+        [config]="configDish"
+        (toggleFavorite)="onToggleFavourite($event)" />
     }
   </div>
 </main>

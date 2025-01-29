@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardInterface } from '../../interfaces/card.interface';
 import { CardConfigInterface } from '../../interfaces/card-config.interface';
 import { FormatRatingCountPipe } from '../../pipes/format-rating-count.pipe';
-import { RestaurantsService } from '../../../services/restaurants.service';
+import { CardTypeEnum } from '../../enums/card-type.enum';
 
 @Component({
   selector: 'app-secondary-card',
@@ -15,10 +15,14 @@ import { RestaurantsService } from '../../../services/restaurants.service';
 export class SecondaryCardComponent {
   @Input() data!: CardInterface;
   @Input() config: CardConfigInterface = {};
+  @Output() toggleFavorite = new EventEmitter<{
+    itemId: string;
+    type: CardTypeEnum;
+  }>();
 
-  constructor(private restaurantsService: RestaurantsService) {}
+  CardTypeEnum = CardTypeEnum;
 
-  toggleFavorite(itemId: number, type: string) {
-    this.restaurantsService.toggleFavorite(itemId, type);
+  onToggleFavorite(itemId: string, type: CardTypeEnum) {
+    this.toggleFavorite.emit({ itemId, type });
   }
 }
