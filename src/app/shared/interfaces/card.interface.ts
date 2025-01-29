@@ -1,14 +1,23 @@
 export interface CardInterface {
-  id: number;
+  id: string;
   name: string;
-  imageUrl: string;
+  imgUrl?: string;
   rating?: number;
-  reviews: number;
-  price?: number;
-  ingredients?: string;
-  isDeliveryFree?: boolean;
-  deliveryCost?: number;
-  deliveryTime?: string;
-  isFavorite?: boolean;
+  feedbacks?: number;
+  delivery: {
+    cost?: number;
+    time?: number;
+  };
+  isFavourite?: boolean;
   categories?: string[];
+  verified?: boolean;
+  description: string;
+  price?: number;
+  ingredients?: [string];
+  addons: {
+    name: string;
+    price: number;
+    countable: boolean;
+  }[];
+  restaurantId: string;
 }

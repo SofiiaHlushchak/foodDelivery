@@ -4,6 +4,7 @@ import { CardConfigInterface } from './shared/interfaces/card-config.interface';
 import { CardInterface } from './shared/interfaces/card.interface';
 import { PrimaryCardComponent } from './shared/components/primary-card/primary-card.component';
 import { SecondaryCardComponent } from './shared/components/secondary-card/secondary-card.component';
+import { CardTypeEnum } from './shared/enums/card-type.enum';
 
 @Component({
   selector: 'app-root',
@@ -28,11 +29,21 @@ export class AppComponent implements OnInit {
   constructor(private restaurantsService: RestaurantsService) {}
 
   ngOnInit() {
-    this.restaurants = this.restaurantsService.getRestaurants();
-    this.dishes = this.restaurantsService.getDishes();
+    this.restaurantsService.getRestaurants().subscribe(data => {
+      this.restaurants = data;
+    });
+
+    this.restaurantsService.getDishes().subscribe(data => {
+      this.dishes = data;
+    });
   }
 
-  toggleFavorite(itemId: number, type: string) {
-    this.restaurantsService.toggleFavorite(itemId, type);
+  onToggleFavourite(event: { itemId: string; type: CardTypeEnum }) {
+    this.restaurantsService.toggleFavourite(
+      event.itemId,
+      event.type,
+      this.restaurants,
+      this.dishes
+    );
   }
 }
