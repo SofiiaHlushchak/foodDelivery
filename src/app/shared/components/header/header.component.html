@@ -1,0 +1,23 @@
+<div class="header">
+  <div class="header__wrapper">
+    <button class="header__toggle">
+      <div class="header__toggle-bars">
+        <span></span>
+        <span></span>
+      </div>
+    </button>
+    <div class="header__info">
+      <p class="header__title">
+        {{ title }}
+        <i class="fa-solid fa-chevron-down header__chevron"></i>
+      </p>
+      <p class="header__subtitle">{{ subtitle }}</p>
+    </div>
+
+    <img
+      *ngIf="showAvatar"
+      class="header__avatar"
+      src="../../../assets/images/avatar.png"
+      alt="User Avatar" />
+  </div>
+</div>

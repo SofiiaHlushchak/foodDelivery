@@ -1,0 +1,29 @@
+<div class="home">
+  <app-header
+    title="Deliver to"
+    subtitle="4102 Pretty View Lane"
+    [showAvatar]="configAvatar" />
+
+  <h1 class="title-first">What would you like to order</h1>
+
+  <div class="restaurants">
+    <div class="restaurants__header">
+      <h2 class="title-secondary">Featured restaurants</h2>
+      <a href="#" class="restaurants__view-all">View All</a>
+    </div>
+    <div class="restaurants__carousel">
+      <div class="restaurants__list">
+        @for (restaurant of restaurants$ | async; track restaurant) {
+          <div class="restaurants__card">
+            <app-primary-card
+              [data]="restaurant"
+              [config]="configRestaurant"
+              (toggleFavorite)="onToggleFavourite(restaurant.id)" />
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <app-footer />
+</div>
