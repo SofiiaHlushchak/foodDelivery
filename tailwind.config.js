@@ -9,6 +9,7 @@ module.exports = {
         whiteTransparent: '#FFFFFF33',
         gray: {
           dark: '#1A1D26',
+          light: '#d3d1d8',
           'ultra-light': '#F6F6F6',
           abbey: '#515154',
           manatee: '#9796A1',
