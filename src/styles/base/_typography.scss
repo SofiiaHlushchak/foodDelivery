@@ -1,0 +1,15 @@
+@use './variables' as *;
+
+.title-first {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 30px;
+  color: $gray-dark;
+}
+
+.title-secondary {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 18px;
+  color: $gray-dark;
+}

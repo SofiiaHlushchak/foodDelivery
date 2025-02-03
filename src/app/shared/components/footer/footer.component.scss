@@ -1,0 +1,21 @@
+@use '../../../../styles/base/mixins' as *;
+@use '../../../../styles/base/variables' as *;
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  font-size: 24px;
+  color: $gray-light;
+
+  .active i {
+    color: $primary-color;
+  }
+
+  @include centered-container($container-extra-large);
+}
