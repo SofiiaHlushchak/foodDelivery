@@ -8,13 +8,13 @@
   }
 
   @if $breakpoint == small-screen {
-    @media only screen and (min-width: 769px) and (max-width: 1024px) {
+    @media only screen and (min-width: 769px) {
       @content;
     }
   }
 
   @if $breakpoint == desktop {
-    @media only screen and (min-width: 1025px) and (max-width: 1200px) {
+    @media only screen and (min-width: 1025px) {
       @content;
     }
   }
@@ -29,4 +29,10 @@
 @mixin centered-container($width) {
   margin: 0 auto;
   max-width: $width;
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

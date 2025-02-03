@@ -9,17 +9,17 @@
   <div class="restaurants">
     <div class="restaurants__header">
       <h2 class="title-secondary">Featured restaurants</h2>
-      <a href="#" class="restaurants__view-all">View All</a>
+      <a href="#" class="link-view-all">View All</a>
     </div>
     <div class="restaurants__carousel">
       <div class="restaurants__list">
-        @for (restaurant of restaurants$ | async; track restaurant) {
-          <div class="restaurants__card">
-            <app-primary-card
-              [data]="restaurant"
-              [config]="configRestaurant"
-              (toggleFavorite)="onToggleFavourite(restaurant.id)" />
-          </div>
+        @for (restaurant of restaurants$ | async; track restaurant.id) {
+          <a [routerLink]="['/restaurants', restaurant.id]"
+            ><div class="restaurants__card">
+              <app-primary-card
+                [card]="{ type: CardTypeEnum.Restaurant, data: restaurant }"
+                (toggleFavorite)="onToggleFavourite(restaurant.id)" /></div
+          ></a>
         }
       </div>
     </div>
