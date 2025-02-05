@@ -7,6 +7,7 @@ module.exports = {
         primary: '#FE724C',
         secondary: '#FFC529',
         whiteTransparent: '#FFFFFF33',
+        'soft-cream': '#FFECE7',
         gray: {
           dark: '#1A1D26',
           light: '#d3d1d8',
@@ -20,6 +21,12 @@ module.exports = {
         orange: {
           custom: '#FE724C',
         },
+        blue: {
+          facebook: '#1877F2',
+        },
+        red: {
+          google: '#DB4437',
+        },
       },
       fontSize: {
         micro: '7px',
@@ -28,6 +35,9 @@ module.exports = {
       },
       backdropBlur: {
         '5xl': '5px',
+      },
+      boxShadow: {
+        'main-button': '0px 10px 30px 0px #FE724C33',
       },
     },
   },
