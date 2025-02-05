@@ -1,45 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { CardInterface } from '../shared/interfaces/card.interface';
+import { tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
-import { CardTypeEnum } from '../shared/enums/card-type.enum';
+import { RestaurantInterface } from '../shared/interfaces/restaurant.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RestaurantsService {
-  private baseUrl = environment.API_URL;
+  private restaurantsUrl = `${environment.API_URL}/restaurants`;
 
-  private restaurantsSubject = new BehaviorSubject<CardInterface[]>([]);
-  private dishesSubject = new BehaviorSubject<CardInterface[]>([]);
-
+  private restaurantsSubject = new BehaviorSubject<RestaurantInterface[]>([]);
   public restaurants$ = this.restaurantsSubject.asObservable();
-  public dishes$ = this.dishesSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  getRestaurants(): Observable<CardInterface[]> {
+  getRestaurants(): Observable<RestaurantInterface[]> {
     return this.http
-      .get<CardInterface[]>(`${this.baseUrl}/restaurants`)
+      .get<RestaurantInterface[]>(this.restaurantsUrl)
       .pipe(tap(restaurants => this.restaurantsSubject.next(restaurants)));
   }
 
-  getDishes(): Observable<CardInterface[]> {
-    return this.http.get<CardInterface[]>(`${this.baseUrl}/dishes`).pipe(
-      map(dishes => dishes.sort((a, b) => (a.price ?? 0) - (b.price ?? 0))),
-      tap(dishes => this.dishesSubject.next(dishes))
-    );
+  getRestaurantById(id: string): Observable<RestaurantInterface> {
+    return this.http.get<RestaurantInterface>(`${this.restaurantsUrl}/${id}`);
   }
 
-  toggleFavourite(itemId: string, type: CardTypeEnum): void {
-    const subject =
-      type === CardTypeEnum.Restaurant
-        ? this.restaurantsSubject
-        : this.dishesSubject;
-    subject.next(
-      subject
+  toggleFavourite(itemId: string): void {
+    this.restaurantsSubject.next(
+      this.restaurantsSubject
         .getValue()
         .map(item =>
           item.id === itemId

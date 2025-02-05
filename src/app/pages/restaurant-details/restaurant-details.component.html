@@ -1,0 +1,102 @@
+<div class="restaurant-details">
+  <section class="restaurant-details__top-section">
+    <div class="restaurant-details__banner">
+      <img
+        [src]="restaurant.imgUrl"
+        alt="restaurant-banner"
+        class="restaurant-details__image" />
+
+      <button
+        class="button-back restaurant-details__button--back"
+        (click)="location.back()">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+
+      <button
+        [ngClass]="{
+          'favorite-button--active': restaurant.isFavourite,
+          'favorite-button--inactive': !restaurant.isFavourite,
+        }"
+        class="favorite-button restaurant-details__button--fav">
+        <i class="fas fa-heart favorite-button__icon"></i>
+      </button>
+    </div>
+
+    <div class="restaurant-details__profile">
+      <img
+        [src]="restaurant.logoUrl"
+        alt="RestaurantLogo"
+        class="restaurant-details__logo" />
+
+      <h1 class="restaurant-details__title">{{ restaurant.name }}</h1>
+
+      <div class="restaurant-details__tags">
+        <span *ngFor="let category of restaurant.categories">
+          {{ category }}
+        </span>
+      </div>
+
+      <div class="restaurant-details__delivery">
+        <div>
+          <img
+            src="../../../../assets/icons/delivery-free.svg"
+            alt="Delivery Free"
+            class="mr-1 h-4 w-4" />
+          @if (restaurant.delivery.cost) {
+            <span>{{ '$' + restaurant.delivery.cost + ' delivery' }}</span>
+          } @else {
+            <span>free</span>
+          }
+        </div>
+
+        <div>
+          <img
+            src="../../../../assets/icons/delivery-time.svg"
+            alt="Delivery Time"
+            class="mr-1 h-4 w-4" />
+          <span>{{ restaurant.delivery.time }} mins</span>
+        </div>
+      </div>
+
+      <div class="restaurant-details__rating">
+        <i class="fas fa-star restaurant-details__rating-icon"></i>
+
+        <span class="restaurant-details__rating-value">
+          {{ restaurant.rating }}
+        </span>
+
+        <span
+          class="restaurant-details__rating-feedback"
+          *ngIf="restaurant.feedbacks">
+          ({{ restaurant.feedbacks | formatRatingCount }})
+        </span>
+
+        <a href="#" class="link-view-all">See Review</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="restaurant-details__featured-items">
+    <div class="restaurant-details__title-wrapper">
+      <h2 class="title-secondary">Featured Items</h2>
+
+      <span *ngIf="restaurant.foodItems">
+        {{ getDisplayedFoodItemsCount() }}
+      </span>
+    </div>
+
+    <div class="restaurant-details__carousel">
+      <div class="restaurant-details__list">
+        @for (foodItem of topDishes; track foodItem.id) {
+          <a href="#">
+            <div class="restaurant-details__card">
+              <app-primary-card
+                [card]="{ type: CardTypeEnum.Dish, data: foodItem }"
+                (toggleFavorite)="onToggleFavourite(foodItem.id)" />
+            </div>
+          </a>
+        }
+      </div>
+    </div>
+  </section>
+</div>

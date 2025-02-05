@@ -1,43 +1,41 @@
 <div class="w-40 overflow-hidden rounded-3xl bg-white shadow-lg">
-  <div class="relative" [ngClass]="{ 'px-3 pt-3': !config.displayPrice }">
+  <div
+    class="relative"
+    [ngClass]="{ 'px-3 pt-3': card.type === CardTypeEnum.Restaurant }">
     <img
-      [src]="data.imgUrl"
-      alt="{{ data.name }}"
+      [src]="card.data.imgUrl"
+      alt="{{ card.data.name }}"
       [ngClass]="{
-        'h-14 w-14 rounded-xl': !config.displayPrice,
-        'h-36 w-full rounded-3xl object-cover': config.displayPrice,
+        'h-14 w-14 rounded-xl': card.type === CardTypeEnum.Restaurant,
+        'h-36 w-full rounded-3xl object-cover': card.type === CardTypeEnum.Dish,
       }" />
 
-    @if (config.displayPrice) {
+    @if (card.type === CardTypeEnum.Dish) {
       <div class="absolute left-3 top-3 rounded-3xl bg-white p-2 text-sm">
-        <span class="font-bold text-black">{{ data.price | currency }}</span>
+        <span class="font-bold text-black">{{
+          foodItemData.price | currency
+        }}</span>
       </div>
       <div
         class="absolute bottom-0 left-3 translate-y-1/2 transform rounded-3xl bg-white p-2 text-micro shadow-lg">
-        <span class="font-bold text-black">{{ data.rating }}</span>
+        <span class="font-bold text-black">{{ card.data.rating }}</span>
         <i class="fas fa-star ml-1 text-secondary"></i>
-        <span class="ml-1 text-gray-manatee" *ngIf="data.feedbacks">
-          ({{ data.feedbacks | formatRatingCount }})
+        <span class="ml-1 text-gray-manatee" *ngIf="card.data.feedbacks">
+          ({{ card.data.feedbacks | formatRatingCount }})
         </span>
       </div>
     } @else {
       <div
-        *ngIf="!config.displayPrice"
         class="absolute left-14 top-1.5 rounded-lg bg-secondary p-1 text-mini text-white shadow">
-        {{ data.rating }}
+        {{ card.data.rating }}
       </div>
     }
 
     <button
-      (click)="
-        onToggleFavorite(
-          data.id,
-          config.displayPrice ? CardTypeEnum.Dish : CardTypeEnum.Restaurant
-        )
-      "
+      (click)="onToggleFavorite(card.data.id, card.type)"
       [ngClass]="{
-        'bg-primary': data.isFavourite,
-        'bg-whiteTransparent backdrop-blur-5xl': !data.isFavourite,
+        'bg-primary': card.data.isFavourite,
+        'bg-whiteTransparent backdrop-blur-5xl': !card.data.isFavourite,
       }"
       class="absolute right-3 top-3 flex rounded-full p-2 shadow-md focus:outline-none">
       <i class="fas fa-heart text-pink-light"></i>
@@ -47,18 +45,18 @@
   <div class="p-3">
     <h3
       class="text-base font-bold text-gray-dark"
-      [ngClass]="{ 'mt-2': config.displayPrice }">
-      {{ data.name }}
+      [ngClass]="{ 'mt-2': card.type === CardTypeEnum.Dish }">
+      {{ card.data.name }}
     </h3>
 
     <div
-      *ngIf="config.displayIngredients"
+      *ngIf="card.type === CardTypeEnum.Dish"
       class="my-2 flex items-center space-x-2 text-xs text-gray-abbey">
-      <span>{{ data.ingredients?.join(', ') }}</span>
+      <span>{{ foodItemData.ingredients?.join(', ') }}</span>
     </div>
 
     <div
-      *ngIf="config.displayDeliveryInfo"
+      *ngIf="card.type === CardTypeEnum.Restaurant"
       class="my-2 flex items-center space-x-2 text-xs text-gray-abbey">
       <div class="flex items-center">
         <img
@@ -66,8 +64,8 @@
           alt="Delivery Free"
           class="mr-1 h-4 w-4" />
 
-        @if (data.delivery.cost) {
-          <span>{{ '$' + data.delivery.cost }}</span>
+        @if (restaurantData.delivery.cost) {
+          <span>{{ '$' + restaurantData.delivery.cost }}</span>
         } @else {
           <span>free</span>
         }
@@ -79,13 +77,15 @@
           alt="Delivery Time"
           class="mr-1 h-4 w-4" />
 
-        <span>{{ data.delivery.time }}</span>
+        <span>{{ restaurantData.delivery.time }}</span>
       </div>
     </div>
 
-    <div *ngIf="config.displayCategories" class="my-2 flex flex-wrap gap-2">
+    <div
+      *ngIf="card.type === CardTypeEnum.Restaurant"
+      class="my-2 flex flex-wrap gap-2">
       <span
-        *ngFor="let category of data.categories"
+        *ngFor="let category of restaurantData.categories"
         class="rounded-md bg-gray-ultra-light px-2 py-1 text-xs text-gray-abbey">
         {{ category | uppercase }}
       </span>

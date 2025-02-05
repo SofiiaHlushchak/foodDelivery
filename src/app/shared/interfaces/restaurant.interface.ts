@@ -1,7 +1,10 @@
-export interface CardInterface {
+import { FoodItemInterface } from './food-item.interface';
+
+export interface RestaurantInterface {
   id: string;
   name: string;
   imgUrl?: string;
+  logoUrl?: string;
   rating?: number;
   feedbacks?: number;
   delivery: {
@@ -11,13 +14,5 @@ export interface CardInterface {
   isFavourite?: boolean;
   categories?: string[];
   verified?: boolean;
-  description: string;
-  price?: number;
-  ingredients?: [string];
-  addons: {
-    name: string;
-    price: number;
-    countable: boolean;
-  }[];
-  restaurantId: string;
+  foodItems?: FoodItemInterface[];
 }
