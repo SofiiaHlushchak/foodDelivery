@@ -14,7 +14,9 @@
           authForm.controls['name'].invalid && authForm.controls['name'].touched
         ">
         <small class="text-red-500">
-          Name is required and must be at least 3 characters long.</small
+          {{
+            authForm.controls['name'].errors | controlErrorHandler: 'Name'
+          }}</small
         >
       </div>
     </div>
@@ -33,7 +35,9 @@
           authForm.controls['email'].invalid &&
           authForm.controls['email'].touched
         ">
-        <small class="text-red-500">Please enter a valid email.</small>
+        <small class="text-red-500">{{
+          authForm.controls['email'].errors | controlErrorHandler: 'Email'
+        }}</small>
       </div>
     </div>
 
@@ -52,8 +56,10 @@
           authForm.controls['password'].touched
         ">
         <small class="text-red-500">
-          Password must be at least 6 characters long, include an uppercase
-          letter, a digit, and a special character.
+          {{
+            authForm.controls['password'].errors
+              | controlErrorHandler: 'Password'
+          }}
         </small>
       </div>
     </div>
@@ -68,9 +74,11 @@
 
   <p class="mt-8 text-center text-sm text-gray-abbey">
     @if (isLogin) {
-      Don't have an account? <span class="text-primary">Sign up</span>
+      Don't have an account?
+      <a [routerLink]="['/sign-up']" class="text-primary">Sign up</a>
     } @else {
-      Already have an account? <span class="text-primary">Login</span>
+      Already have an account?
+      <a [routerLink]="['/login']" class="text-primary">Login</a>
     }
   </p>
 

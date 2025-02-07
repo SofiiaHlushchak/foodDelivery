@@ -37,3 +37,18 @@
   border-radius: 12px;
   box-shadow: 5px 10px 20px 0px $gray-light;
 }
+
+.logout-button {
+  color: white;
+  background: $primary-color;
+  display: flex;
+  align-items: center;
+  padding: 9px 14px 9px 9px;
+  gap: 9px;
+  border-radius: 29px;
+  box-shadow: 0px 20px 30px 0px $orange-muted;
+
+  > i {
+    font-size: 26px;
+  }
+}

@@ -1,46 +1,28 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { UserRegistrationData } from '../../interfaces/auth.interface';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+
+import { ControlErrorHandlerPipe } from '../../pipes/control-error-handler.pipe';
 
 @Component({
   selector: 'app-auth-form',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ControlErrorHandlerPipe,
+    RouterModule,
+  ],
   templateUrl: './auth-form.component.html',
   styleUrls: ['./auth-form.component.css'],
 })
 export class AuthFormComponent {
-  @Input() isLogin = false;
-  @Output() formSubmit = new EventEmitter<UserRegistrationData>();
-
-  private fb = inject(FormBuilder);
-
-  authForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(
-          /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/
-        ),
-      ],
-    ],
-    name: ['', [Validators.required, Validators.minLength(3)]],
-  });
+  @Input() isLogin!: boolean;
+  @Input() authForm!: FormGroup;
+  @Output() formSubmit = new EventEmitter<void>();
 
   onSubmit() {
-    if (this.authForm.invalid) {
-      return;
-    }
-
-    const formValues = this.authForm.value;
-
-    this.formSubmit.emit(formValues);
+    if (this.authForm.invalid) return;
+    this.formSubmit.emit();
   }
 }
