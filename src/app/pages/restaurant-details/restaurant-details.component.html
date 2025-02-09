@@ -76,11 +76,13 @@
     </div>
   </section>
 
-  <section class="restaurant-details__featured-items">
+  <section
+    class="restaurant-details__featured-items"
+    *ngIf="restaurant.foodItems?.length">
     <div class="restaurant-details__title-wrapper">
       <h2 class="title-secondary">Featured Items</h2>
 
-      <span *ngIf="restaurant.foodItems">
+      <span>
         {{ getDisplayedFoodItemsCount() }}
       </span>
     </div>

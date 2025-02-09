@@ -1,15 +1,22 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../../services/auth.service';
 import { AuthFormComponent } from '../../shared/components/auth-form/auth-form.component';
 import { UserRegistrationData } from '../../shared/interfaces/auth.interface';
 import { ROUTES } from '../../shared/constants/routes.constants';
+import { SocialButtonsComponent } from '../../shared/components/social-buttons/social-buttons.component';
+import { DecorativeShapesComponent } from '../../shared/components/decorative-shapes/decorative-shapes.component';
 
 @Component({
   selector: 'app-registration',
-  imports: [AuthFormComponent],
+  imports: [
+    AuthFormComponent,
+    SocialButtonsComponent,
+    DecorativeShapesComponent,
+    RouterModule,
+  ],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss',
 })

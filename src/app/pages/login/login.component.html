@@ -1,8 +1,20 @@
 <div
   class="m-auto flex w-full flex-col justify-center sm:w-3/4 md:w-2/3 lg:w-3/5 xl:w-3/5 2xl:w-1/2">
-  <h2 class="mb-6 text-2xl font-bold text-gray-900">Login</h2>
+  <app-decorative-shapes />
+  <h2 class="mb-6 pb-0.5 pt-24 text-2xl font-bold text-gray-900">Login</h2>
   <app-auth-form
     [authForm]="loginForm"
     [isLogin]="true"
     (formSubmit)="loginUser()" />
+
+  <p class="mt-8 text-center text-sm text-gray-abbey">
+    Don't have an account?
+    <a [routerLink]="['/sign-up']" class="text-primary">Sign up</a>
+  </p>
+  <div class="mt-14 flex items-center space-x-4">
+    <hr class="flex-grow border-t border-gray-300" />
+    <span class="text-center text-gray-abbey">Sign in with</span>
+    <hr class="flex-grow border-t border-gray-300" />
+  </div>
+  <app-social-buttons />
 </div>
