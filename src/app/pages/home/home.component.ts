@@ -9,6 +9,8 @@ import { FooterComponent } from '../../shared/components/footer/footer.component
 import { RouterModule } from '@angular/router';
 import { RestaurantInterface } from '../../shared/interfaces/restaurant.interface';
 import { LogoutComponent } from '../../shared/components/logout/logout.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +22,7 @@ import { LogoutComponent } from '../../shared/components/logout/logout.component
     CommonModule,
     RouterModule,
     LogoutComponent,
+    MatProgressBarModule,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
@@ -29,6 +32,8 @@ export class HomeComponent implements OnInit {
   restaurants$!: Observable<RestaurantInterface[]>;
 
   CardTypeEnum = CardTypeEnum;
+
+  isLoading: Observable<boolean> = inject(LoadingService).isLoading$;
 
   private restaurantsService = inject(RestaurantsService);
 

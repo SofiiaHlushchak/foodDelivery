@@ -14,7 +14,8 @@ import {
   FacebookLoginProvider,
 } from '@abacritt/angularx-social-login';
 import { environment } from './environments/environment';
-import { AuthInterceptor } from './services/auth-interceptor.service';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 
 const googleLoginOptions: GoogleInitOptions = {
   oneTapEnabled: false,
@@ -31,6 +32,7 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptor,
       multi: true,
     },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
