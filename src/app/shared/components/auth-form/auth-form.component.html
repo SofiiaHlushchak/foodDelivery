@@ -1,101 +1,70 @@
-<div>
-  <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="space-y-6">
-    <div *ngIf="!isLogin" class="flex flex-col">
-      <label for="name" class="block text-sm font-medium text-gray-manatee">
-        Full Name
-      </label>
-      <input
-        id="name"
-        formControlName="name"
-        type="text"
-        class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
-      <div
-        *ngIf="
-          authForm.controls['name'].invalid && authForm.controls['name'].touched
-        ">
-        <small class="text-red-500">
-          {{
-            authForm.controls['name'].errors | controlErrorHandler: 'Name'
-          }}</small
-        >
-      </div>
-    </div>
-
-    <div class="flex w-full flex-col">
-      <label for="email" class="block text-sm font-medium text-gray-manatee">
-        Email</label
+<form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="space-y-6">
+  <div *ngIf="!isLogin" class="flex flex-col">
+    <label for="name" class="block text-sm font-medium text-gray-manatee">
+      Full Name
+    </label>
+    <input
+      id="name"
+      formControlName="name"
+      type="text"
+      class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
+    <div
+      *ngIf="
+        authForm.controls['name'].invalid && authForm.controls['name'].touched
+      ">
+      <small class="text-red-500">
+        {{
+          authForm.controls['name'].errors | controlErrorHandler: 'Name'
+        }}</small
       >
-      <input
-        id="email"
-        formControlName="email"
-        type="email"
-        class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
-      <div
-        *ngIf="
-          authForm.controls['email'].invalid &&
-          authForm.controls['email'].touched
-        ">
-        <small class="text-red-500">{{
-          authForm.controls['email'].errors | controlErrorHandler: 'Email'
-        }}</small>
-      </div>
     </div>
-
-    <div class="flex flex-col">
-      <label for="password" class="block text-sm font-medium text-gray-manatee">
-        Password
-      </label>
-      <input
-        id="password"
-        formControlName="password"
-        type="password"
-        class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
-      <div
-        *ngIf="
-          authForm.controls['password'].invalid &&
-          authForm.controls['password'].touched
-        ">
-        <small class="text-red-500">
-          {{
-            authForm.controls['password'].errors
-              | controlErrorHandler: 'Password'
-          }}
-        </small>
-      </div>
-    </div>
-
-    <button
-      type="submit"
-      [disabled]="authForm.invalid"
-      class="m-auto flex rounded-full bg-primary px-16 py-6 text-base tracking-widest text-white shadow-main-button">
-      {{ isLogin ? 'Login' : ('Sign up' | uppercase) }}
-    </button>
-  </form>
-
-  <p class="mt-8 text-center text-sm text-gray-abbey">
-    @if (isLogin) {
-      Don't have an account?
-      <a [routerLink]="['/sign-up']" class="text-primary">Sign up</a>
-    } @else {
-      Already have an account?
-      <a [routerLink]="['/login']" class="text-primary">Login</a>
-    }
-  </p>
-
-  <div class="mt-14 flex items-center space-x-4">
-    <hr class="flex-grow border-t border-gray-300" />
-    <span class="text-center text-gray-abbey">Sign up with</span>
-    <hr class="flex-grow border-t border-gray-300" />
   </div>
 
-  <div class="mt-4 flex justify-around">
-    <button class="flex items-center rounded-full p-3 shadow-lg">
-      <i class="fa-brands fa-facebook text-4xl text-blue-facebook"></i>
-      <span class="ml-2.5 text-sm tracking-wide">FACEBOOK</span>
-    </button>
-    <button class="flex items-center rounded-full p-3 shadow-lg">
-      <i class="fa-brands fa-google text-4xl text-red-google"></i>
-      <span class="ml-2.5 text-sm tracking-wide">GOOGLE</span>
-    </button>
+  <div class="flex w-full flex-col">
+    <label for="email" class="block text-sm font-medium text-gray-manatee">
+      Email</label
+    >
+    <input
+      id="email"
+      formControlName="email"
+      type="email"
+      class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
+    <div
+      *ngIf="
+        authForm.controls['email'].invalid && authForm.controls['email'].touched
+      ">
+      <small class="text-red-500">{{
+        authForm.controls['email'].errors | controlErrorHandler: 'Email'
+      }}</small>
+    </div>
   </div>
-</div>
+
+  <div class="flex flex-col">
+    <label for="password" class="block text-sm font-medium text-gray-manatee">
+      Password
+    </label>
+    <input
+      id="password"
+      formControlName="password"
+      type="password"
+      class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
+    <div
+      *ngIf="
+        authForm.controls['password'].invalid &&
+        authForm.controls['password'].touched
+      ">
+      <small class="text-red-500">
+        {{
+          authForm.controls['password'].errors | controlErrorHandler: 'Password'
+        }}
+      </small>
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    [disabled]="authForm.invalid"
+    class="m-auto flex min-w-64 items-center justify-center rounded-full bg-primary px-16 py-6 text-base tracking-widest text-white shadow-main-button">
+    {{ isLogin ? 'Login' : ('Sign up' | uppercase) }}
+  </button>
+</form>

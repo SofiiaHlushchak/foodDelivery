@@ -11,8 +11,10 @@
 html,
 body {
   height: 100%;
-}
-body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
+}
+
+app-restaurant-details {
+  flex: 1;
 }

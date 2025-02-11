@@ -1,0 +1,11 @@
+<div class="mt-4 flex justify-around">
+  <button
+    class="flex items-center rounded-full p-3 shadow-lg"
+    (click)="signInFacebookHandler()">
+    <i class="fa-brands fa-facebook text-4xl text-blue-facebook"></i>
+    <span class="ml-2.5 text-sm tracking-wide">FACEBOOK</span>
+  </button>
+
+  <app-google-signin
+    (loginWithGoogle)="googleSignin($event)"></app-google-signin>
+</div>
