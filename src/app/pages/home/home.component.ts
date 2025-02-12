@@ -8,9 +8,9 @@ import { HeaderComponent } from '../../shared/components/header/header.component
 import { FooterComponent } from '../../shared/components/footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { RestaurantInterface } from '../../shared/interfaces/restaurant.interface';
-import { LogoutComponent } from '../../shared/components/logout/logout.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LoadingService } from '../../services/loading.service';
+import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-home',
@@ -21,14 +21,15 @@ import { LoadingService } from '../../services/loading.service';
     FooterComponent,
     CommonModule,
     RouterModule,
-    LogoutComponent,
     MatProgressBarModule,
+    SidebarComponent,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
   configAvatar = true;
+  isSidebarOpen = false;
   restaurants$!: Observable<RestaurantInterface[]>;
 
   CardTypeEnum = CardTypeEnum;
@@ -44,5 +45,9 @@ export class HomeComponent implements OnInit {
 
   onToggleFavourite(itemId: string): void {
     this.restaurantsService.toggleFavourite(itemId);
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
   }
 }

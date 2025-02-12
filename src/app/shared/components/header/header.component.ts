@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -12,4 +12,9 @@ export class HeaderComponent {
   @Input() title!: string;
   @Input() subtitle!: string;
   @Input() showAvatar!: boolean;
+  @Output() sidebarToggle = new EventEmitter<void>();
+
+  toggleSidebar() {
+    this.sidebarToggle.emit();
+  }
 }

@@ -38,6 +38,7 @@ module.exports = {
       },
       boxShadow: {
         'main-button': '0px 10px 30px 0px #FE724C33',
+        avatar: '0px 15px 40px 0px #FFC5294D',
       },
     },
   },

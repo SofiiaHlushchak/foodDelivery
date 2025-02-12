@@ -1,0 +1,40 @@
+<div class="relative">
+  <div
+    *ngIf="isSidebarOpen"
+    class="fixed inset-0 z-40 bg-gray-manatee bg-opacity-50 transition-opacity duration-300 ease-in-out"
+    (click)="toggleSidebar()"
+    (keydown.escape)="toggleSidebar()"
+    tabindex="0"></div>
+
+  <div
+    class="fixed left-0 top-0 z-50 flex h-full transform flex-col justify-between bg-white pb-8 pl-8 pr-20 pt-20 transition-transform duration-300 ease-in-out"
+    [ngClass]="{
+      '-translate-x-full': !isSidebarOpen,
+      'translate-x-0 shadow-2xl': isSidebarOpen,
+    }">
+    <div>
+      <div class="flex flex-col space-y-4">
+        <img
+          src="../../../../assets/images/avatar.png"
+          alt="Avatar"
+          class="h-24 w-24 rounded-full shadow-avatar" />
+        <div>
+          <h2 class="text-xl font-semibold">Eljad Eendaz</h2>
+          <p class="text-xs text-gray-manatee">prelookstudio&#64;gmail.com</p>
+        </div>
+      </div>
+
+      <nav class="mt-6 space-y-10">
+        <a
+          *ngFor="let item of menuItems"
+          href="#"
+          class="flex items-center space-x-4 text-gray-700 hover:text-orange-500">
+          <i [class]="item.icon" class="text-gray-manatee"></i>
+          <span>{{ item.label }}</span>
+        </a>
+      </nav>
+    </div>
+
+    <app-logout />
+  </div>
+</div>
