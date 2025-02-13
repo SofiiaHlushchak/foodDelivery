@@ -1,0 +1,13 @@
+<app-sidebar
+  [isSidebarOpen]="isSidebarOpen"
+  (sidebarToggle)="toggleSidebar()" />
+
+<app-header
+  [headerConfig]="layoutConfig"
+  (sidebarToggle)="toggleSidebar()"
+  [isRestaurantFavourite]="isRestaurantFavourite"
+  (favouriteStatusChanged)="toggleFavourite()" />
+
+<router-outlet></router-outlet>
+
+<app-footer *ngIf="layoutConfig.footerVisible" />

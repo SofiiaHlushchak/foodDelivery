@@ -4,25 +4,19 @@ import { Observable } from 'rxjs';
 import { CardTypeEnum } from '../../shared/enums/card-type.enum';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { PrimaryCardComponent } from '../../shared/components/primary-card/primary-card.component';
-import { HeaderComponent } from '../../shared/components/header/header.component';
-import { FooterComponent } from '../../shared/components/footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { RestaurantInterface } from '../../shared/interfaces/restaurant.interface';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LoadingService } from '../../services/loading.service';
-import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-home',
   imports: [
     AsyncPipe,
     PrimaryCardComponent,
-    HeaderComponent,
-    FooterComponent,
     CommonModule,
     RouterModule,
     MatProgressBarModule,
-    SidebarComponent,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
