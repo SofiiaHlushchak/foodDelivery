@@ -1,23 +1,45 @@
-<div class="header">
+<header class="header z-10">
   <div class="header__wrapper">
-    <button class="header__toggle" (click)="toggleSidebar()">
+    <button
+      class="header__toggle"
+      (click)="toggleSidebar()"
+      *ngIf="headerConfig.headerMenuButtonVisible">
       <div class="header__toggle-bars">
         <span></span>
         <span></span>
       </div>
     </button>
-    <div class="header__info">
+
+    <button
+      class="button-back ml-2.5 mt-2.5"
+      (click)="location.back()"
+      *ngIf="headerConfig.headerBackButtonVisible">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <button
+      *ngIf="headerConfig.headerFavouriteButtonVisible"
+      [ngClass]="{
+        'favorite-button--active': isRestaurantFavourite,
+        'favorite-button--inactive': !isRestaurantFavourite,
+      }"
+      class="favorite-button mr-2.5"
+      (click)="toggleFavourite()">
+      <i class="fas fa-heart favorite-button__icon"></i>
+    </button>
+
+    <div class="header__info" *ngIf="headerConfig.headerTitle">
       <p class="header__title">
-        {{ title }}
+        {{ headerConfig.headerTitle }}
         <i class="fa-solid fa-chevron-down header__chevron"></i>
       </p>
-      <p class="header__subtitle">{{ subtitle }}</p>
+      <p class="header__subtitle">{{ headerConfig.headerSubtitle }}</p>
     </div>
 
     <img
-      *ngIf="showAvatar"
+      *ngIf="headerConfig.headerPictureDisplay"
       class="header__avatar"
       src="../../../assets/images/avatar.png"
       alt="User Avatar" />
   </div>
-</div>
+</header>

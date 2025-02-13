@@ -1,13 +1,6 @@
-<app-sidebar
-  [isSidebarOpen]="isSidebarOpen"
-  (sidebarToggle)="toggleSidebar()" />
 <div class="home">
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading | async" />
-  <app-header
-    title="Deliver to"
-    subtitle="4102 Pretty View Lane"
-    [showAvatar]="configAvatar"
-    (sidebarToggle)="toggleSidebar()" />
+
   <h1 class="title-first">What would you like to order</h1>
 
   <div class="restaurants">
@@ -28,5 +21,4 @@
       </div>
     </div>
   </div>
-  <app-footer />
 </div>

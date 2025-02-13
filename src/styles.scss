@@ -20,6 +20,13 @@ app-restaurant-details {
   flex: 1;
 }
 
+app-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+}
+
 .mat-mdc-progress-bar {
   position: fixed !important;
   top: 0;
