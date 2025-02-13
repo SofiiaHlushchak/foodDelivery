@@ -5,21 +5,6 @@
         [src]="restaurant.imgUrl"
         alt="restaurant-banner"
         class="restaurant-details__image" />
-
-      <button
-        class="button-back restaurant-details__button--back"
-        (click)="location.back()">
-        <i class="fas fa-chevron-left"></i>
-      </button>
-
-      <button
-        [ngClass]="{
-          'favorite-button--active': restaurant.isFavourite,
-          'favorite-button--inactive': !restaurant.isFavourite,
-        }"
-        class="favorite-button restaurant-details__button--fav">
-        <i class="fas fa-heart favorite-button__icon"></i>
-      </button>
     </div>
 
     <div class="restaurant-details__profile">
