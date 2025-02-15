@@ -1,5 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { RouteConfigData } from '../../interfaces/route-config-data.interface';
 
 @Component({
   selector: 'app-header',
@@ -9,12 +10,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   imports: [CommonModule],
 })
 export class HeaderComponent {
-  @Input() title!: string;
-  @Input() subtitle!: string;
-  @Input() showAvatar!: boolean;
+  @Input() headerConfig!: RouteConfigData;
+  @Input() isRestaurantFavourite?: boolean;
   @Output() sidebarToggle = new EventEmitter<void>();
+  @Output() favouriteStatusChanged = new EventEmitter<void>();
+
+  public location = inject(Location);
 
   toggleSidebar() {
     this.sidebarToggle.emit();
+  }
+
+  toggleFavourite() {
+    this.favouriteStatusChanged.emit();
   }
 }
