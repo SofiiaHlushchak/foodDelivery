@@ -1,0 +1,19 @@
+<div class="flex items-center gap-2">
+  <button
+    type="button"
+    class="flex h-8 w-8 items-center justify-center rounded-full border border-primary text-primary"
+    (click)="decrease()">
+    <span>-</span>
+  </button>
+
+  <span class="text-lg font-bold">
+    {{ quantity | number: '2.0' }}
+  </span>
+
+  <button
+    type="button"
+    class="flex h-8 w-8 items-center justify-center rounded-full border border-white bg-primary text-white"
+    (click)="increase()">
+    <span>+</span>
+  </button>
+</div>

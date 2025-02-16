@@ -1,30 +1,28 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { RestaurantsService } from '../services/restaurants.service';
+import { DishesService } from '../services/dishes.service';
 import { catchError, switchMap, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RestaurantsGuard implements CanActivate {
-  private restaurantsService = inject(RestaurantsService);
+export class FoodItemsGuard implements CanActivate {
+  private foodItemsService = inject(DishesService);
   private router = inject(Router);
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-    const restaurantId = route.paramMap.get('id');
+    const foodItemId = route.paramMap.get('id');
 
-    if (!restaurantId) {
+    if (!foodItemId) {
       this.router.navigate(['/']);
       return of(false);
     }
 
-    return this.restaurantsService.getRestaurants().pipe(
+    return this.foodItemsService.getDishes().pipe(
       take(1),
-      switchMap(restaurants => {
-        const exists = restaurants.find(
-          restaurant => restaurant.id === restaurantId
-        );
+      switchMap(foodItems => {
+        const exists = foodItems.find(foodItem => foodItem.id === foodItemId);
 
         return exists ? of(true) : (this.router.navigate(['/']), of(false));
       }),
