@@ -7,6 +7,7 @@ import { CardTypeEnum } from '../../shared/enums/card-type.enum';
 import { DishesService } from '../../services/dishes.service';
 import { FormatRatingCountPipe } from '../../shared/pipes/format-rating-count.pipe';
 import { FoodItemInterface } from '../../shared/interfaces/food-item.interface';
+import { ROUTES } from '../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-restaurant-details',
@@ -25,6 +26,7 @@ export class RestaurantDetailsComponent implements OnInit {
   topDishes: FoodItemInterface[] = [];
 
   CardTypeEnum = CardTypeEnum;
+  ROUTES = ROUTES;
 
   private route = inject(ActivatedRoute);
   private dishesService = inject(DishesService);

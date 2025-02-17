@@ -33,14 +33,10 @@
 
       <div class="mt-4 space-y-4" formArrayName="addons">
         <div *ngFor="let addon of addons.controls; index as i">
-          <app-checkbox
-            [formGroup]="addon"
-            [label]="addon.value.name"
-            [price]="addon.value.price"
-            [countable]="addon.value.countable" />
+          <app-addon-checkbox [formGroup]="addon" />
         </div>
       </div>
     </div>
-    <app-add-to-cart-button />
+    <app-add-to-cart-button class="mx-auto mt-11" />
   </div>
 </form>

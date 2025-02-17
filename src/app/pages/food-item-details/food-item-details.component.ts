@@ -14,7 +14,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { QuantityControlComponent } from '../../shared/components/quantity-control/quantity-control.component';
-import { CheckboxComponent } from '../../shared/components/checkbox/checkbox.component';
+import { AddonCheckboxComponent } from '../../shared/components/addon-checkbox/addon-checkbox.component';
 import { AddToCartButtonComponent } from '../../shared/components/add-to-cart-button/add-to-cart-button.component';
 
 @Component({
@@ -24,18 +24,18 @@ import { AddToCartButtonComponent } from '../../shared/components/add-to-cart-bu
     CommonModule,
     ReactiveFormsModule,
     QuantityControlComponent,
-    CheckboxComponent,
+    AddonCheckboxComponent,
     AddToCartButtonComponent,
   ],
   templateUrl: './food-item-details.component.html',
   styleUrl: './food-item-details.component.scss',
 })
 export class FoodItemDetailsComponent implements OnInit {
-  dish!: FoodItemInterface;
-  quantity = 1;
-
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
+
+  dish: FoodItemInterface = this.route.snapshot.data['dish'];
+  quantity = 1;
 
   dishForm!: FormGroup;
 
@@ -44,7 +44,6 @@ export class FoodItemDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dish = this.route.snapshot.data['dish'];
     this.setForm();
   }
 
@@ -52,15 +51,9 @@ export class FoodItemDetailsComponent implements OnInit {
     this.dishForm = this.fb.group({
       dishId: [this.dish.id],
       quantity: [this.quantity, [Validators.required, Validators.min(1)]],
-      addons: this.fb.array([]),
-    });
-
-    this.setupAddonsControls();
-  }
-
-  setupAddonsControls(): void {
-    this.dish.addons.forEach(addon => {
-      this.addons.push(this.fb.group({ ...addon }));
+      addons: this.fb.array(
+        this.dish.addons.map(addon => this.fb.group({ ...addon }))
+      ),
     });
   }
 
@@ -77,6 +70,5 @@ export class FoodItemDetailsComponent implements OnInit {
         (addon: AddonInterface) => addon.countable
       ),
     };
-    console.log('Adding to cart:', filteredFormValue);
   }
 }
