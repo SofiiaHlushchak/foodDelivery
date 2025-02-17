@@ -75,7 +75,7 @@
     <div class="restaurant-details__carousel">
       <div class="restaurant-details__list">
         @for (foodItem of topDishes; track foodItem.id) {
-          <a href="#">
+          <a [routerLink]="['/', ROUTES.DISHES, foodItem.id]">
             <div class="restaurant-details__card">
               <app-primary-card
                 [card]="{ type: CardTypeEnum.Dish, data: foodItem }"

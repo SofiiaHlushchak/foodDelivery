@@ -5,6 +5,7 @@ export const ROUTE_PARAMS = {
 export const ROUTES = {
   HOME: 'home',
   RESTAURANTS: 'restaurants',
+  DISHES: 'dishes',
   SIGN_UP: 'sign-up',
   LOG_IN: 'login',
 };

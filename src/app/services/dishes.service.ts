@@ -23,6 +23,10 @@ export class DishesService {
     );
   }
 
+  getDishById(id: string): Observable<FoodItemInterface> {
+    return this.http.get<FoodItemInterface>(`${this.dishesUrl}/${id}`);
+  }
+
   toggleFavourite(itemId: string): void {
     this.dishesSubject.next(
       this.dishesSubject

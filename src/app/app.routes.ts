@@ -8,6 +8,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { AuthGuard } from './guards/auth.guard';
 import { restaurantDetailsRoutes } from './pages/restaurant-details/restaurant-details.routes';
 import { RouteConfigData } from './shared/interfaces/route-config-data.interface';
+import { foodItemDetailsRoutes } from './pages/food-item-details/food-item-details.routes';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,10 @@ export const routes: Routes = [
       {
         path: ROUTES.RESTAURANTS,
         children: restaurantDetailsRoutes,
+      },
+      {
+        path: ROUTES.DISHES,
+        children: foodItemDetailsRoutes,
       },
     ],
   },

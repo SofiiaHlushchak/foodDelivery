@@ -8,10 +8,12 @@ export interface FoodItemInterface {
   feedbacks?: number;
   isFavourite?: boolean;
   ingredients?: [string];
-  addons: {
-    name: string;
-    price: number;
-    countable: boolean;
-  }[];
+  addons: AddonInterface[];
   restaurantId: string;
+}
+
+export interface AddonInterface {
+  name: string;
+  price: number;
+  countable: boolean;
 }
