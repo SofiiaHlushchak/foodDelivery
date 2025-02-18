@@ -1,11 +1,21 @@
 <footer class="footer">
-  <a routerLink="/home" [ngClass]="{ active: isActive('/home') }">
+  <a
+    [routerLink]="['/', ROUTES.HOME]"
+    [ngClass]="{ active: isActive(ROUTES.HOME) }">
     <i class="fa-solid fa-compass"></i>
   </a>
   <a href="">
     <i class="fa-solid fa-location-dot"></i>
   </a>
-  <a href="">
+  <a
+    [routerLink]="['/', ROUTES.CART]"
+    [ngClass]="{ active: isActive(ROUTES.CART) }"
+    class="relative">
+    <span
+      *ngIf="totalQuantity > 0"
+      class="absolute -right-2.5 -top-0.5 rounded bg-secondary px-0.5 text-xs text-white"
+      >{{ totalQuantity }}</span
+    >
     <i class="fa-solid fa-bag-shopping"></i>
   </a>
   <a href="">
