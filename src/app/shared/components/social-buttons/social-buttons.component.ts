@@ -14,26 +14,29 @@ export class SocialButtonsComponent {
   authSubscription!: Subscription;
 
   signInFacebookHandler(): void {
-    this.authService.loginWithFacebook().then(socialUser => {
-      console.log('socialUser', socialUser);
-      if (socialUser && socialUser.authToken) {
-        this.authService.setSocialUser = socialUser;
-        this.authService.handleAuthSuccess(socialUser.authToken);
-      }
+    this.authSubscription?.unsubscribe();
+
+    this.authSubscription = this.authService.loginWithFacebook().subscribe({
+      next: response => {
+        this.authService.handleAuthSuccess(response.token);
+      },
+      error: err => {
+        console.error('Error during Facebook login', err);
+      },
     });
   }
 
   googleSignin(googleWrapper: { click: () => void }): void {
     this.authSubscription?.unsubscribe();
 
-    this.authSubscription = this.authService
-      .loginWithGoogle()
-      .subscribe(socialUser => {
-        if (socialUser && socialUser.idToken) {
-          this.authService.setSocialUser = socialUser;
-          this.authService.handleAuthSuccess(socialUser.idToken);
-        }
-      });
+    this.authSubscription = this.authService.loginWithGoogle().subscribe({
+      next: response => {
+        this.authService.handleAuthSuccess(response.token);
+      },
+      error: err => {
+        console.error('Google login error1', err);
+      },
+    });
 
     googleWrapper.click();
   }
