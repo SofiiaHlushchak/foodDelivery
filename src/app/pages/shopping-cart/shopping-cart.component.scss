@@ -1,0 +1,13 @@
+@use '../../../styles/base/mixins' as *;
+@use '../../../styles/base/variables' as *;
+
+:host {
+  flex: 1;
+  margin-top: 100px;
+}
+.shopping-cart {
+  @include centered-container($container-extra-large);
+
+  display: flex;
+  flex-direction: column;
+}
