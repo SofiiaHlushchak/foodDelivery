@@ -1,0 +1,77 @@
+<div class="shopping-cart">
+  <form [formGroup]="cartForm" (ngSubmit)="updateCart()">
+    <div
+      *ngFor="let item of items.controls; let i = index"
+      [formGroup]="item"
+      class="flex flex-col justify-between p-4">
+      <div class="relative flex gap-6">
+        <img
+          [src]="item.value.dish.imgUrl"
+          alt="Dish Image"
+          class="h-20 w-20 rounded-md object-cover shadow-beige" />
+        <div class="flex w-full flex-col justify-between">
+          <div class="flex flex-col">
+            <span class="text-lg font-semibold">
+              {{ item.value.dish.name }}
+            </span>
+            <span class="text-xs text-gray-manatee">
+              {{ item.value.dish.ingredients.join(', ') }}
+            </span>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-xl font-semibold">
+              {{ item.value.dish.price | currency }}
+            </span>
+            <app-quantity-control
+              [quantity]="item.value.quantity"
+              (quantityChange)="onQuantityChange(i, $event)" />
+          </div>
+        </div>
+        <button
+          type="button"
+          (click)="removeItem(i)"
+          class="absolute right-0 top-0 text-xl text-primary">
+          <span>×</span>
+        </button>
+      </div>
+
+      <div class="mt-4" *ngIf="getAddons(item) && getAddons(item).length > 0">
+        <label for="addon-toggle-{{ i }}" class="link-view-all cursor-pointer">
+          Addons
+        </label>
+        <input type="checkbox" id="addon-toggle-{{ i }}" class="peer hidden" />
+
+        <div
+          class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out peer-checked:block peer-checked:max-h-96">
+          <div *ngFor="let addon of getAddons(item).controls; let j = index">
+            <app-addon-checkbox [formGroup]="addon" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 flex flex-col items-center justify-between">
+      <div
+        *ngFor="let item of orderSummary"
+        class="flex w-full justify-between py-5"
+        [ngClass]="{ 'border-b': item.label !== 'Total' }">
+        <span class="text-base">{{ item.label }}</span>
+
+        <span class="text-xl font-semibold">
+          <span *ngIf="item.label === 'Total'" class="ml-2 text-sm font-normal">
+            ({{ totalQuantity }} items)
+          </span>
+          {{ item.value.toFixed(2) | currency }}
+        </span>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="cartForm.invalid"
+      class="m-auto mt-20 flex min-w-64 items-center justify-center rounded-full bg-primary px-16 py-6 text-base uppercase tracking-widest text-white shadow-main-button">
+      checkout
+    </button>
+  </form>
+</div>

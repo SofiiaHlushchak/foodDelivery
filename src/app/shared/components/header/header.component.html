@@ -41,5 +41,16 @@
       class="header__avatar"
       src="../../../assets/images/avatar.png"
       alt="User Avatar" />
+
+    <div
+      *ngIf="headerConfig.headerIcon"
+      class="relative rounded-2xl shadow-orange-soft">
+      <span
+        *ngIf="totalQuantity > 0"
+        class="absolute -right-1 -top-0.5 rounded bg-secondary px-0.5 text-xs text-white">
+        {{ totalQuantity }}
+      </span>
+      <i [ngClass]="headerConfig.headerIconClass" class="p-3 text-primary"></i>
+    </div>
   </div>
 </header>
