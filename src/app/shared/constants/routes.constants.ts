@@ -8,4 +8,5 @@ export const ROUTES = {
   DISHES: 'dishes',
   SIGN_UP: 'sign-up',
   LOG_IN: 'login',
+  CART: 'cart',
 };

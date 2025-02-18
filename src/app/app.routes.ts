@@ -9,6 +9,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { restaurantDetailsRoutes } from './pages/restaurant-details/restaurant-details.routes';
 import { RouteConfigData } from './shared/interfaces/route-config-data.interface';
 import { foodItemDetailsRoutes } from './pages/food-item-details/food-item-details.routes';
+import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,17 @@ export const routes: Routes = [
       {
         path: ROUTES.DISHES,
         children: foodItemDetailsRoutes,
+      },
+      {
+        path: ROUTES.CART,
+        component: ShoppingCartComponent,
+        canActivate: [AuthGuard],
+        data: {
+          headerTitle: 'Cart',
+          headerIcon: true,
+          headerIconClass: 'fa-solid fa-bag-shopping',
+          headerBackButtonVisible: true,
+        },
       },
     ],
   },

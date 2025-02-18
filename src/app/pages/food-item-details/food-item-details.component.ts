@@ -1,9 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {
-  AddonInterface,
-  FoodItemInterface,
-} from '../../shared/interfaces/food-item.interface';
+import { FoodItemInterface } from '../../shared/interfaces/food-item.interface';
 import { FormatRatingCountPipe } from '../../shared/pipes/format-rating-count.pipe';
 import { CommonModule } from '@angular/common';
 import {
@@ -16,6 +13,7 @@ import {
 import { QuantityControlComponent } from '../../shared/components/quantity-control/quantity-control.component';
 import { AddonCheckboxComponent } from '../../shared/components/addon-checkbox/addon-checkbox.component';
 import { AddToCartButtonComponent } from '../../shared/components/add-to-cart-button/add-to-cart-button.component';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-food-item-details',
@@ -33,6 +31,7 @@ import { AddToCartButtonComponent } from '../../shared/components/add-to-cart-bu
 export class FoodItemDetailsComponent implements OnInit {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
+  private cartService = inject(CartService);
 
   dish: FoodItemInterface = this.route.snapshot.data['dish'];
   quantity = 1;
@@ -49,7 +48,7 @@ export class FoodItemDetailsComponent implements OnInit {
 
   setForm(): void {
     this.dishForm = this.fb.group({
-      dishId: [this.dish.id],
+      dish: [this.dish],
       quantity: [this.quantity, [Validators.required, Validators.min(1)]],
       addons: this.fb.array(
         this.dish.addons.map(addon => this.fb.group({ ...addon }))
@@ -64,11 +63,7 @@ export class FoodItemDetailsComponent implements OnInit {
 
   onSubmit(): void {
     const formValue = this.dishForm.value;
-    const filteredFormValue = {
-      ...formValue,
-      addons: formValue.addons.filter(
-        (addon: AddonInterface) => addon.countable
-      ),
-    };
+
+    this.cartService.addToCart(formValue);
   }
 }
