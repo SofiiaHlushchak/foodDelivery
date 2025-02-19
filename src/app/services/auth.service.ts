@@ -9,6 +9,8 @@ import {
   throwError,
   take,
   from,
+  BehaviorSubject,
+  of,
 } from 'rxjs';
 import { environment } from '../environments/environment';
 import {
@@ -23,7 +25,6 @@ import {
   SocialAuthService,
   SocialUser,
 } from '@abacritt/angularx-social-login';
-import { ROUTES } from '../shared/constants/routes.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -34,14 +35,22 @@ export class AuthService {
   private http = inject(HttpClient);
   private socialAuthService = inject(SocialAuthService);
   private router = inject(Router);
+  private userSubject = new BehaviorSubject<UserLoggedData | null>(null);
 
   set setSocialUser(socialUser: SocialUser) {
     this.socialUser = socialUser;
   }
 
+  setUser(user: UserLoggedData | null) {
+    this.userSubject.next(user);
+  }
+
   handleAuthSuccess(token: string) {
     localStorage.setItem('authToken', token);
-    this.router.navigate([ROUTES.HOME]);
+    this.getLoggedUser().subscribe({
+      next: user => this.setUser(user),
+      error: () => this.logOut(),
+    });
   }
 
   register(userData: UserRegistrationData): Observable<void> {
@@ -99,7 +108,15 @@ export class AuthService {
   }
 
   getLoggedUser(): Observable<UserLoggedData> {
-    return this.http.get<UserLoggedData>(`${this.apiUrl}/me`);
+    return this.http.get<UserLoggedData>(`${this.apiUrl}/profile`).pipe(
+      tap(user => this.setUser(user)),
+      catchError(() => throwError(() => new Error('Failed to fetch user data')))
+    );
+  }
+
+  getCachedUser(): Observable<UserLoggedData> {
+    const cachedUser = this.userSubject.value;
+    return cachedUser ? of(cachedUser) : this.getLoggedUser();
   }
 
   logOut() {
@@ -115,6 +132,7 @@ export class AuthService {
 
   private clearSession() {
     localStorage.removeItem('authToken');
+    this.setUser(null);
     this.router.navigate(['/login']);
   }
 }

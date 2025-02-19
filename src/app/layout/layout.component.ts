@@ -43,10 +43,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
 
   private routeSubscription: Subscription = new Subscription();
-  private userSubscription: Subscription = new Subscription();
 
   private restaurant?: RestaurantInterface;
-  user?: UserLoggedData;
+  user: UserLoggedData | null = null;
 
   layoutConfig!: RouteConfigData;
   isSidebarOpen = false;
@@ -54,7 +53,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscribeToRouterEvents();
-    this.getUserInfo();
+    this.authService.getCachedUser().subscribe({
+      next: user => {
+        this.user = user;
+      },
+      error: err => {
+        console.error('Failed to fetch user data', err);
+      },
+    });
   }
 
   subscribeToRouterEvents(): void {
@@ -77,12 +83,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.layoutConfig = { ...routeData };
   }
 
-  getUserInfo(): void {
-    this.userSubscription = this.authService.getLoggedUser().subscribe(user => {
-      this.user = user;
-    });
-  }
-
   toggleFavourite(): void {
     this.isRestaurantFavourite = !this.isRestaurantFavourite;
   }
@@ -98,9 +98,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
-    }
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
     }
   }
 }

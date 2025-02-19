@@ -10,7 +10,7 @@ import { UserLoggedData } from '../../interfaces/auth.interface';
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
-  @Input() user?: UserLoggedData;
+  @Input() user: UserLoggedData | null = null;
   @Input() isSidebarOpen?: boolean;
   @Output() sidebarToggle = new EventEmitter<void>();
 
