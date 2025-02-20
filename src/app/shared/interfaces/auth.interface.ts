@@ -12,3 +12,8 @@ export interface UserLoginData {
 export interface AuthResponse {
   token: string;
 }
+
+export interface UserLoggedData {
+  name: string;
+  email: string;
+}

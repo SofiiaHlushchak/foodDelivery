@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LogoutComponent } from '../logout/logout.component';
+import { UserLoggedData } from '../../interfaces/auth.interface';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,6 +10,7 @@ import { LogoutComponent } from '../logout/logout.component';
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
+  @Input() user: UserLoggedData | null = null;
   @Input() isSidebarOpen?: boolean;
   @Output() sidebarToggle = new EventEmitter<void>();
 

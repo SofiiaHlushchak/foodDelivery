@@ -10,9 +10,11 @@ import { HeaderComponent } from '../shared/components/header/header.component';
 import { SidebarComponent } from '../shared/components/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { RouteConfigData } from '../shared/interfaces/route-config-data.interface';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { RestaurantInterface } from '../shared/interfaces/restaurant.interface';
 import { FooterComponent } from '../shared/components/footer/footer.component';
+import { UserLoggedData } from '../shared/interfaces/auth.interface';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -38,9 +40,12 @@ import { FooterComponent } from '../shared/components/footer/footer.component';
 export class LayoutComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private authService = inject(AuthService);
 
   private routeSubscription: Subscription = new Subscription();
+
   private restaurant?: RestaurantInterface;
+  user$: Observable<UserLoggedData | null> = this.authService.getCachedUser();
 
   layoutConfig!: RouteConfigData;
   isSidebarOpen = false;

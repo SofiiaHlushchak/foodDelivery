@@ -1,9 +1,21 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import {
+  catchError,
+  filter,
+  Observable,
+  switchMap,
+  tap,
+  throwError,
+  take,
+  from,
+  BehaviorSubject,
+  of,
+} from 'rxjs';
 import { environment } from '../environments/environment';
 import {
   AuthResponse,
+  UserLoggedData,
   UserLoginData,
   UserRegistrationData,
 } from '../shared/interfaces/auth.interface';
@@ -13,25 +25,32 @@ import {
   SocialAuthService,
   SocialUser,
 } from '@abacritt/angularx-social-login';
-import { ROUTES } from '../shared/constants/routes.constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private socialUser?: SocialUser;
+  private socialUser: SocialUser | null = null;
   private apiUrl = `${environment.API_URL}/api/auth`;
   private http = inject(HttpClient);
   private socialAuthService = inject(SocialAuthService);
   private router = inject(Router);
+  private userSubject = new BehaviorSubject<UserLoggedData | null>(null);
 
   set setSocialUser(socialUser: SocialUser) {
     this.socialUser = socialUser;
   }
 
+  setUser(user: UserLoggedData | null) {
+    this.userSubject.next(user);
+  }
+
   handleAuthSuccess(token: string) {
     localStorage.setItem('authToken', token);
-    this.router.navigate([ROUTES.HOME]);
+    this.getLoggedUser().subscribe({
+      next: user => this.setUser(user),
+      error: () => this.logOut(),
+    });
   }
 
   register(userData: UserRegistrationData): Observable<void> {
@@ -53,17 +72,57 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, userData);
   }
 
-  loginWithGoogle(): Observable<SocialUser> {
-    return this.socialAuthService.authState;
+  loginWithGoogle(): Observable<AuthResponse> {
+    return this.socialAuthService.authState.pipe(
+      filter((user: SocialUser | null) => !!user?.idToken),
+      tap(user => {
+        if (user) {
+          this.setSocialUser = user;
+        }
+      }),
+      switchMap(user =>
+        this.http.post<AuthResponse>(`${this.apiUrl}/google-login`, {
+          token: user!.idToken,
+        })
+      ),
+      take(1)
+    );
   }
 
-  loginWithFacebook(): Promise<SocialUser> {
-    return this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
+  loginWithFacebook(): Observable<AuthResponse> {
+    return from(
+      this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID)
+    ).pipe(
+      tap(user => {
+        if (user) {
+          this.setSocialUser = user;
+        }
+      }),
+      switchMap(user =>
+        this.http.post<AuthResponse>(`${this.apiUrl}/facebook-login`, {
+          token: user.authToken,
+        })
+      ),
+      take(1)
+    );
+  }
+
+  getLoggedUser(): Observable<UserLoggedData> {
+    return this.http.get<UserLoggedData>(`${this.apiUrl}/profile`).pipe(
+      tap(user => this.setUser(user)),
+      catchError(() => throwError(() => new Error('Failed to fetch user data')))
+    );
+  }
+
+  getCachedUser(): Observable<UserLoggedData> {
+    const cachedUser = this.userSubject.value;
+    return cachedUser ? of(cachedUser) : this.getLoggedUser();
   }
 
   logOut() {
     if (this.socialUser) {
       this.socialAuthService.signOut().then(() => {
+        this.socialUser = null;
         this.clearSession();
       });
     } else {
@@ -73,6 +132,7 @@ export class AuthService {
 
   private clearSession() {
     localStorage.removeItem('authToken');
+    this.setUser(null);
     this.router.navigate(['/login']);
   }
 }

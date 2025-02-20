@@ -1,4 +1,5 @@
 <app-sidebar
+  [user]="user$ | async"
   [isSidebarOpen]="isSidebarOpen"
   (sidebarToggle)="toggleSidebar()" />
 
