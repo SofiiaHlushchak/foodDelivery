@@ -10,7 +10,7 @@ import { HeaderComponent } from '../shared/components/header/header.component';
 import { SidebarComponent } from '../shared/components/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { RouteConfigData } from '../shared/interfaces/route-config-data.interface';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { RestaurantInterface } from '../shared/interfaces/restaurant.interface';
 import { FooterComponent } from '../shared/components/footer/footer.component';
 import { UserLoggedData } from '../shared/interfaces/auth.interface';
@@ -45,7 +45,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription = new Subscription();
 
   private restaurant?: RestaurantInterface;
-  user: UserLoggedData | null = null;
+  user$: Observable<UserLoggedData | null> = this.authService.getCachedUser();
 
   layoutConfig!: RouteConfigData;
   isSidebarOpen = false;
@@ -53,14 +53,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscribeToRouterEvents();
-    this.authService.getCachedUser().subscribe({
-      next: user => {
-        this.user = user;
-      },
-      error: err => {
-        console.error('Failed to fetch user data', err);
-      },
-    });
   }
 
   subscribeToRouterEvents(): void {
