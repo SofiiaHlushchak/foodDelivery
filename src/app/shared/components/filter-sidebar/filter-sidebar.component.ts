@@ -50,10 +50,6 @@ export class FilterSidebarComponent implements OnInit {
     return this.searchForm.get('rating')?.value;
   }
 
-  getCategoryValue(index: number): boolean {
-    return this.searchForm.get('categories')?.value[index] ?? false;
-  }
-
   applySortClick(): void {
     this.formCategories?.setValue(this.currentCategories.value);
     this.toggleFiltersSidebar();
