@@ -1,7 +1,54 @@
 <div class="home">
-  <mat-progress-bar mode="indeterminate" *ngIf="isLoading | async" />
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async" />
 
   <h1 class="title-first">What would you like to order</h1>
+
+  <form [formGroup]="searchForm" class="relative">
+    <div class="mt-4 grid grid-cols-[1fr_auto] items-center gap-2">
+      <div
+        class="flex h-full items-center rounded-lg bg-gray-ultra-light px-4 shadow-md">
+        <label for="search" class="cursor-text">
+          <i class="fa-solid fa-magnifying-glass text-gray-manatee"></i>
+        </label>
+        <input
+          formControlName="searchQuery"
+          type="text"
+          placeholder="Find for food or restaurant..."
+          class="w-full bg-transparent pl-2 text-gray-manatee outline-none" />
+      </div>
+
+      <button
+        class="flex items-center justify-center rounded-lg bg-white p-3 shadow-md"
+        (click)="toggleFiltersSidebar()">
+        <i class="fa-solid fa-bars text-2xl leading-none text-primary"></i>
+      </button>
+    </div>
+
+    <div formArrayName="categories" class="relative mt-4 w-full">
+      <div class="scrollbar-hide -mr-6 flex gap-2 overflow-x-auto py-3 pr-6">
+        <label
+          *ngFor="let category of categories; let i = index"
+          class="flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full px-5 py-3.5 text-sm"
+          [ngClass]="{
+            'bg-primary text-white shadow-lg': getCategoryValue(i) === true,
+            'bg-white shadow-md': getCategoryValue(i) !== true,
+          }">
+          <input type="checkbox" [formControlName]="i" class="hidden" />
+          {{ category | titlecase }}
+        </label>
+      </div>
+    </div>
+
+    <app-filter-sidebar
+      *ngIf="isFiltersSidebarOpen"
+      [searchForm]="searchForm"
+      [categories]="categories"
+      [isOpen]="isFiltersSidebarOpen"
+      (toggleSidebar)="toggleFiltersSidebar()"
+      (applySort)="onApplySort()"
+      (resetFilters)="onResetFilters()">
+    </app-filter-sidebar>
+  </form>
 
   <div class="restaurants">
     <div class="restaurants__header">
