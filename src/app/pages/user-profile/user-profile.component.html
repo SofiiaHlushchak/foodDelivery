@@ -1,8 +1,7 @@
-<div
-  class="m-auto flex w-full flex-col justify-center sm:w-3/4 md:w-2/3 lg:w-3/5 xl:w-3/5 2xl:w-1/2">
+<div class="m-auto flex w-full flex-col justify-center sm:w-3/4 md:w-2/3 lg:w-3/5 xl:w-3/5 2xl:w-1/2">
   <app-decorative-shapes />
   <app-user-info
-    *ngIf="user"
+    *ngIf="user$ | async as user"
     [user]="user"
     [displayEmail]="false"
     class="flex flex-col items-center" />
@@ -73,6 +72,16 @@
 
     <div formGroupName="deliveryAddress" class="mt-6 space-y-6">
       <div>
+        <label for="region" class="block text-sm font-medium text-gray-manatee">
+          Region
+        </label>
+        <input
+          id="region"
+          formControlName="region"
+          (blur)="onRegionBlur()"
+          class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
+      </div>
+      <div>
         <label for="city" class="block text-sm font-medium text-gray-manatee">
           City
         </label>
@@ -80,15 +89,6 @@
           id="city"
           formControlName="city"
           (blur)="onCityBlur()"
-          class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
-      </div>
-      <div>
-        <label for="region" class="block text-sm font-medium text-gray-manatee">
-          Region
-        </label>
-        <input
-          id="region"
-          formControlName="region"
           class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
       </div>
 
