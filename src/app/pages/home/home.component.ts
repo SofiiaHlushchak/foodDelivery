@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { RestaurantsService } from '../../services/restaurants.service';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -11,6 +11,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LoadingService } from '../../services/loading.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FilterSidebarComponent } from '../../shared/components/filter-sidebar/filter-sidebar.component';
+import { CATEGORIES } from '../../shared/constants/categories.const';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-home',
@@ -30,6 +32,7 @@ import { FilterSidebarComponent } from '../../shared/components/filter-sidebar/f
 export class HomeComponent implements OnInit {
   private restaurantsService = inject(RestaurantsService);
   private fb = inject(FormBuilder);
+  private destroyRef = inject(DestroyRef);
 
   searchForm!: FormGroup;
   restaurants$: Observable<RestaurantInterface[]> =
@@ -38,23 +41,7 @@ export class HomeComponent implements OnInit {
   isSidebarOpen = false;
   isFiltersSidebarOpen = false;
 
-  categories = [
-    'burger',
-    'chicken',
-    'fast food',
-    'coffee',
-    'tea',
-    'drinks',
-    'ice-cream',
-    'donut',
-    'pizza',
-    'italian',
-    'pasta',
-    'taco',
-    'burito',
-    'mexican',
-    'hot dog',
-  ];
+  categories = CATEGORIES;
 
   CardTypeEnum = CardTypeEnum;
 
@@ -71,14 +58,22 @@ export class HomeComponent implements OnInit {
     });
 
     this.restaurantsService.getCachedRestaurants().subscribe();
+
     this.searchForm
       .get('searchQuery')!
-      .valueChanges.pipe(debounceTime(500), distinctUntilChanged())
+      .valueChanges.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe(() => this.applyFilters());
 
-    this.searchForm.get('categories')!.valueChanges.subscribe(categories => {
-      this.applyFilters(categories);
-    });
+    this.searchForm
+      .get('categories')!
+      .valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(categories => {
+        this.applyFilters(categories);
+      });
   }
 
   getCategoryValue(index: number): boolean {
@@ -94,14 +89,14 @@ export class HomeComponent implements OnInit {
       (_, i) => selectedCategories[i]
     );
 
-    this.restaurantsService.setFilters(
-      searchQuery?.trim(),
-      sortBy,
-      filteredCategories,
-      rating,
-      priceFrom,
-      priceTo
-    );
+    this.restaurantsService.setFilters({
+      name: searchQuery?.trim() || '',
+      sortBy: sortBy || '',
+      categories: filteredCategories.length ? filteredCategories : undefined,
+      rating: rating || '',
+      priceFrom: priceFrom || '',
+      priceTo: priceTo || '',
+    });
   }
 
   onApplySort(): void {

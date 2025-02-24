@@ -1,9 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { RestaurantInterface } from '../shared/interfaces/restaurant.interface';
+import { CommonHelper } from '../shared/helpers/common.helper';
+
+interface RestaurantFilters {
+  searchQuery?: string;
+  sortBy?: string;
+  categories?: string[];
+  rating?: string;
+  priceFrom?: number | null;
+  priceTo?: number | null;
+  [key: string]: string | number | boolean | string[] | null | undefined;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -25,24 +36,14 @@ export class RestaurantsService {
   }
 
   getRestaurants(
-    query = '',
-    sortBy = '',
-    categories: string[] = [],
-    rating = '',
-    priceFrom: number | null = null,
-    priceTo: number | null = null
+    filters: RestaurantFilters = {}
   ): Observable<RestaurantInterface[]> {
-    let params = new HttpParams();
-    if (query) params = params.set('name', query);
-    if (sortBy) params = params.set('sortBy', sortBy);
-    if (categories.length)
-      params = params.set('categories', categories.join(','));
-    if (rating) params = params.set('rating', rating);
-    if (priceFrom) params = params.set('priceFrom', priceFrom.toString());
-    if (priceTo) params = params.set('priceTo', priceTo.toString());
+    const cleanedParams = CommonHelper.removeBlankAttributes(filters);
 
     return this.http
-      .get<RestaurantInterface[]>(this.restaurantsUrl, { params })
+      .get<
+        RestaurantInterface[]
+      >(this.restaurantsUrl, { params: cleanedParams })
       .pipe(
         tap(restaurants => {
           this.restaurantsSubject.next(restaurants);
@@ -54,22 +55,8 @@ export class RestaurantsService {
       );
   }
 
-  setFilters(
-    query = '',
-    sortBy = '',
-    categories: string[] = [],
-    rating = '',
-    priceFrom: number | null = null,
-    priceTo: number | null = null
-  ): void {
-    this.getRestaurants(
-      query,
-      sortBy,
-      categories,
-      rating,
-      priceFrom,
-      priceTo
-    ).subscribe();
+  setFilters(filters: RestaurantFilters): void {
+    this.getRestaurants(filters).subscribe();
   }
 
   getRestaurantById(id: string): Observable<RestaurantInterface> {
