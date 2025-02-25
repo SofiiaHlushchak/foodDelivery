@@ -81,8 +81,7 @@ export class HomeComponent implements OnInit {
   }
 
   applyFilters(updatedCategories?: boolean[]): void {
-    const { searchQuery, sortBy, categories, rating, priceFrom, priceTo } =
-      this.searchForm.value;
+    const { categories, searchQuery, ...rest } = this.searchForm.value;
     const selectedCategories = updatedCategories || categories;
 
     const filteredCategories = this.categories.filter(
@@ -90,12 +89,9 @@ export class HomeComponent implements OnInit {
     );
 
     this.restaurantsService.setFilters({
+      ...rest,
       name: searchQuery?.trim() || '',
-      sortBy: sortBy || '',
       categories: filteredCategories.length ? filteredCategories : undefined,
-      rating: rating || '',
-      priceFrom: priceFrom || '',
-      priceTo: priceTo || '',
     });
   }
 
