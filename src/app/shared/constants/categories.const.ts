@@ -1,0 +1,17 @@
+export const CATEGORIES = [
+  'burger',
+  'chicken',
+  'fast food',
+  'coffee',
+  'tea',
+  'drinks',
+  'ice-cream',
+  'donut',
+  'pizza',
+  'italian',
+  'pasta',
+  'taco',
+  'burito',
+  'mexican',
+  'hot dog',
+];

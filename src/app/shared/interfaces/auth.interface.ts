@@ -16,4 +16,12 @@ export interface AuthResponse {
 export interface UserLoggedData {
   name: string;
   email: string;
+  phoneNumber?: string;
+  deliveryAddress?: {
+    city: string;
+    street: string;
+    region: string;
+  };
+  novaPostDepartment?: string;
+  age?: number;
 }

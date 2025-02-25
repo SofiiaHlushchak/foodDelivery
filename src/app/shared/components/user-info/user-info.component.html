@@ -1,0 +1,10 @@
+<img
+  src="../../../../assets/images/avatar.png"
+  alt="Avatar"
+  class="h-24 w-24 rounded-full shadow-avatar" />
+<div class="mt-5">
+  <h2 class="text-xl font-semibold">{{ user?.name }}</h2>
+  <p *ngIf="displayEmail" class="text-xs text-gray-manatee">
+    {{ user?.email }}
+  </p>
+</div>

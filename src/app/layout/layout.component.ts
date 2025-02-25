@@ -32,7 +32,6 @@ import { AuthService } from '../services/auth.service';
         display: flex;
         flex-direction: column;
         flex: 1;
-        justify-content: center;
       }
     `,
   ],

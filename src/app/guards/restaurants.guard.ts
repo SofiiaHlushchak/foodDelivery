@@ -24,7 +24,7 @@ export class RestaurantsGuard implements CanActivate {
       return of(false);
     }
 
-    return this.restaurantsService.getRestaurants().pipe(
+    return this.restaurantsService.getCachedRestaurants().pipe(
       take(1),
       map(restaurants => {
         const exists = restaurants.some(

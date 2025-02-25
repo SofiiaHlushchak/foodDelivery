@@ -30,3 +30,14 @@ body {
     )
   );
 }
+
+.mat-mdc-slider {
+  @include mat.slider-overrides(
+    (
+      focus-state-layer-color: $primary-color,
+      handle-color: $primary-color,
+      hover-handle-color: $primary-color,
+      active-track-color: $primary-color,
+    )
+  );
+}

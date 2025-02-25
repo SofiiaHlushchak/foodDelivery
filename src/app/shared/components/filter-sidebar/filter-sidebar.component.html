@@ -1,0 +1,110 @@
+<div *ngIf="isOpen" class="fixed inset-0 z-50 flex items-center justify-center">
+  <div
+    [formGroup]="searchForm"
+    class="relative flex h-full w-full flex-col gap-y-10 overflow-y-auto bg-white px-6 py-12">
+    <button
+      class="absolute right-4 top-4 text-4xl text-primary"
+      (click)="toggleFiltersSidebar()">
+      ×
+    </button>
+
+    <div>
+      <label class="mb-2 block text-lg font-semibold" for="sortBy">
+        Sort By
+      </label>
+      <div class="flex flex-wrap gap-3">
+        <label
+          *ngFor="let option of sortOptions"
+          class="cursor-pointer rounded-full px-5 py-3 text-sm transition"
+          [ngClass]="{
+            'bg-primary text-white shadow-orange-soft':
+              selectedSortByValue === option.value,
+            'bg-white shadow-lg': selectedSortByValue !== option.value,
+          }">
+          <input
+            type="radio"
+            [value]="option.value"
+            formControlName="sortBy"
+            class="hidden" />
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <label class="mb-2 text-lg font-semibold" for="rating">Rating</label>
+      <div class="flex gap-3">
+        <label
+          *ngFor="let r of [1, 2, 3, 4, 5]"
+          class="flex cursor-pointer items-center rounded-full px-5 py-3 text-sm transition"
+          [ngClass]="{
+            'bg-primary text-white shadow-orange-soft': selectedRating === r,
+            'bg-white shadow-lg': selectedRating !== r,
+          }">
+          <input
+            type="radio"
+            [value]="r"
+            formControlName="rating"
+            class="hidden" />
+          {{ r }}
+          <i class="fas fa-star ml-1 text-sm"></i>
+        </label>
+      </div>
+    </div>
+
+    <div class="relative mt-4">
+      <label class="mb-2 text-lg font-semibold" for="categories">
+        Cuisines
+      </label>
+
+      <div class="flex flex-wrap gap-3 first-letter:uppercase">
+        <label
+          *ngFor="let category of currentCategories.controls; let i = index"
+          class="flex cursor-pointer items-center justify-center rounded-full px-5 py-3.5 text-sm transition"
+          [ngClass]="{
+            'bg-primary text-white shadow-lg': category.value,
+            'bg-white shadow-md': !category.value,
+          }">
+          <input type="checkbox" [formControl]="category" class="hidden" />
+          {{ categories[i] | titlecase }}
+        </label>
+      </div>
+    </div>
+
+    <div class="flex w-full flex-col">
+      <div class="flex justify-between">
+        <label class="mb-2 text-lg font-semibold" for="price">
+          Price range
+        </label>
+        <p class="text-lg">
+          ${{ searchForm.get('priceFrom')?.value || 0 }} - ${{
+            searchForm.get('priceTo')?.value || 1000
+          }}
+        </p>
+      </div>
+
+      <mat-slider min="0" max="1000">
+        <input
+          matSliderStartThumb
+          formControlName="priceFrom"
+          placeholder="0" />
+        <input matSliderEndThumb formControlName="priceTo" placeholder="1000" />
+      </mat-slider>
+    </div>
+
+    <div class="flex justify-around">
+      <button
+        type="button"
+        class="rounded-full border-2 border-primary px-14 py-5 uppercase text-primary"
+        (click)="resetFiltersClick()">
+        Reset
+      </button>
+      <button
+        type="button"
+        class="rounded-full bg-primary px-14 py-5 uppercase text-white shadow-orange-soft"
+        (click)="applySortClick()">
+        Apply
+      </button>
+    </div>
+  </div>
+</div>

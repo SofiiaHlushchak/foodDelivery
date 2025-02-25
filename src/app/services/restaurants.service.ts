@@ -1,9 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { RestaurantInterface } from '../shared/interfaces/restaurant.interface';
+import { CommonHelper } from '../shared/helpers/common.helper';
+
+interface RestaurantFilters {
+  searchQuery?: string;
+  sortBy?: string;
+  categories?: string[];
+  rating?: string;
+  priceFrom?: number | null;
+  priceTo?: number | null;
+  [key: string]: string | number | boolean | string[] | null | undefined;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +27,36 @@ export class RestaurantsService {
 
   constructor(private http: HttpClient) {}
 
-  getRestaurants(): Observable<RestaurantInterface[]> {
+  getCachedRestaurants(): Observable<RestaurantInterface[]> {
+    const cachedRestaurants = this.restaurantsSubject.getValue();
+
+    return cachedRestaurants?.length
+      ? of(cachedRestaurants)
+      : this.getRestaurants();
+  }
+
+  getRestaurants(
+    filters: RestaurantFilters = {}
+  ): Observable<RestaurantInterface[]> {
+    const cleanedParams = CommonHelper.removeBlankAttributes(filters);
+
     return this.http
-      .get<RestaurantInterface[]>(this.restaurantsUrl)
-      .pipe(tap(restaurants => this.restaurantsSubject.next(restaurants)));
+      .get<
+        RestaurantInterface[]
+      >(this.restaurantsUrl, { params: cleanedParams })
+      .pipe(
+        tap(restaurants => {
+          this.restaurantsSubject.next(restaurants);
+        }),
+        catchError(error => {
+          console.error('Error fetching restaurants:', error);
+          return [];
+        })
+      );
+  }
+
+  setFilters(filters: RestaurantFilters): void {
+    this.getRestaurants(filters).subscribe();
   }
 
   getRestaurantById(id: string): Observable<RestaurantInterface> {

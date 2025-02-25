@@ -3,6 +3,16 @@
 
 .home {
   @include centered-container($container-extra-large);
+  flex: 1;
+  margin-top: 100px;
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 
   .restaurants {
     display: grid;
