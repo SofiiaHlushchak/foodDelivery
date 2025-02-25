@@ -10,6 +10,7 @@ import { restaurantDetailsRoutes } from './pages/restaurant-details/restaurant-d
 import { RouteConfigData } from './shared/interfaces/route-config-data.interface';
 import { foodItemDetailsRoutes } from './pages/food-item-details/food-item-details.routes';
 import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 
 export const routes: Routes = [
   {
@@ -45,6 +46,14 @@ export const routes: Routes = [
           headerTitle: 'Cart',
           headerIcon: true,
           headerIconClass: 'fa-solid fa-bag-shopping',
+          headerBackButtonVisible: true,
+        },
+      },
+      {
+        path: ROUTES.PROFILE,
+        component: UserProfileComponent,
+        canActivate: [AuthGuard],
+        data: {
           headerBackButtonVisible: true,
         },
       },
