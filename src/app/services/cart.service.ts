@@ -40,7 +40,9 @@ export class CartService {
 
   calculateTotals(items: CartItemInterface[]): {
     subtotal: number;
+    delivery: number;
     tax: number;
+    total: number;
   } {
     const subtotal = items.reduce((acc, item) => {
       const dishPrice = item.dish?.price ? item.dish.price * item.quantity : 0;
@@ -48,7 +50,15 @@ export class CartService {
     }, 0);
 
     const tax = subtotal * 0.1;
-    return { subtotal, tax };
+    const delivery = 1.33;
+    const total = subtotal + tax + delivery;
+
+    return { subtotal, delivery, tax, total };
+  }
+
+  getTotalPrice(): number {
+    const cartItems = this.getCartItems();
+    return this.calculateTotals(cartItems).total;
   }
 
   getTotalQuantity(): number {

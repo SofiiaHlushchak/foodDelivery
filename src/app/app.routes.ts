@@ -11,6 +11,7 @@ import { RouteConfigData } from './shared/interfaces/route-config-data.interface
 import { foodItemDetailsRoutes } from './pages/food-item-details/food-item-details.routes';
 import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { PaymentComponent } from './pages/payment/payment.component';
 
 export const routes: Routes = [
   {
@@ -47,7 +48,8 @@ export const routes: Routes = [
           headerIcon: true,
           headerIconClass: 'fa-solid fa-bag-shopping',
           headerBackButtonVisible: true,
-        },
+          cartItemsVisible: true,
+        } as RouteConfigData,
       },
       {
         path: ROUTES.PROFILE,
@@ -55,7 +57,18 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         data: {
           headerBackButtonVisible: true,
-        },
+        } as RouteConfigData,
+      },
+      {
+        path: ROUTES.PAYMENT,
+        component: PaymentComponent,
+        canActivate: [AuthGuard],
+        data: {
+          headerBackButtonVisible: true,
+          headerTitle: 'Payment',
+          headerIcon: true,
+          headerIconClass: 'fa-solid fa-money-check',
+        } as RouteConfigData,
       },
     ],
   },

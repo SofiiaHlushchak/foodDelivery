@@ -35,22 +35,18 @@ export class AuthService {
   private http = inject(HttpClient);
   private socialAuthService = inject(SocialAuthService);
   private router = inject(Router);
-  private userSubject = new BehaviorSubject<UserLoggedData | null>(null);
+  public userSubject$ = new BehaviorSubject<UserLoggedData | null>(null);
 
   set setSocialUser(socialUser: SocialUser) {
     this.socialUser = socialUser;
   }
 
   setUser(user: UserLoggedData | null) {
-    this.userSubject.next(user);
+    this.userSubject$.next(user);
   }
 
   handleAuthSuccess(token: string) {
     localStorage.setItem('authToken', token);
-    this.getLoggedUser().subscribe({
-      next: user => this.setUser(user),
-      error: () => this.logOut(),
-    });
   }
 
   register(userData: UserRegistrationData): Observable<void> {
@@ -115,7 +111,7 @@ export class AuthService {
   }
 
   getCachedUser(): Observable<UserLoggedData> {
-    const cachedUser = this.userSubject.value;
+    const cachedUser = this.userSubject$.value;
     return cachedUser ? of(cachedUser) : this.getLoggedUser();
   }
 

@@ -10,4 +10,5 @@ export const ROUTES = {
   LOG_IN: 'login',
   CART: 'cart',
   PROFILE: 'profile',
+  PAYMENT: 'payment',
 };

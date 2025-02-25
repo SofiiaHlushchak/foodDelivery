@@ -47,7 +47,7 @@ export class UserProfileComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   private lastCity = '';
-  user$: Observable<UserLoggedData | null> = this.authService.getCachedUser();
+  user$: Observable<UserLoggedData | null> = this.authService.userSubject$;
 
   ngOnInit(): void {
     this.initForm();

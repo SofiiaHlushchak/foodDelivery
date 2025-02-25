@@ -44,7 +44,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription = new Subscription();
 
   private restaurant?: RestaurantInterface;
-  user$: Observable<UserLoggedData | null> = this.authService.getCachedUser();
+  user$: Observable<UserLoggedData | null> = this.authService.userSubject$;
 
   layoutConfig!: RouteConfigData;
   isSidebarOpen = false;

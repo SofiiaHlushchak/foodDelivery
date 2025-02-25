@@ -1,0 +1,77 @@
+<div
+  class="m-auto flex w-full flex-col justify-center sm:w-3/4 md:w-2/3 lg:w-3/5 xl:w-3/5 2xl:w-1/2">
+  <form [formGroup]="paymentForm" (ngSubmit)="submitForm()">
+    <div class="mb-6">
+      <h3 class="text-lg font-semibold">Shipping to</h3>
+      <div class="mt-2 flex items-center">
+        <img
+          src="../../../assets/images/map.png"
+          alt="Map"
+          class="mr-3 h-20 w-20 rounded-lg" />
+        <div>
+          <p class="text-xl font-bold">Home</p>
+          <p
+            class="mt-1.5 text-sm text-gray-manatee"
+            *ngIf="user$ | async as user">
+            {{ user.deliveryAddress?.region }},
+            {{ user.deliveryAddress?.city }},
+            {{ user.deliveryAddress?.street }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <h3 class="text-sm font-semibold">Payment Method</h3>
+    <div class="mt-2 flex space-x-4">
+      <button
+        type="button"
+        class="rounded-full border px-3 text-2xl text-primary">
+        +
+      </button>
+      <div *ngFor="let payment of paymentMethods" class="flex items-center">
+        <label
+          class="cursor-pointer rounded-lg border p-3"
+          [ngClass]="{
+            'border-primary':
+              paymentForm.get('paymentMethod')?.value === payment.value,
+          }">
+          <input
+            type="radio"
+            formControlName="paymentMethod"
+            [value]="payment.value"
+            class="hidden" />
+          <img [src]="payment.img" [alt]="payment.alt" />
+        </label>
+      </div>
+    </div>
+
+    <div
+      class="mx-auto mt-6 rounded-lg bg-gradient-to-r from-pink-400 via-pink-500 to-purple-500 p-6 text-white shadow-[0px_10px_30px_0px_#E9A3A559] sm:w-3/4 md:w-2/3 lg:w-3/5 xl:w-2/5">
+      <p>Credit Card</p>
+      <img src="../../../assets/images/chip.png" alt="chip" class="mt-8" />
+      <div class="mt-2 flex justify-between text-2xl font-semibold">
+        <span>5341</span><span>1512448</span><span>54887</span>
+      </div>
+      <div class="mt-4 flex items-center justify-between">
+        <p class="text-sm text-white" *ngIf="user$ | async as user">
+          {{ user.name }}
+        </p>
+        <img
+          src="../../../assets/images/mastercard.png"
+          alt="MasterCard"
+          class="w-10" />
+      </div>
+    </div>
+
+    <div class="mt-6 flex items-center justify-between">
+      <span class="text-lg font-semibold">Total Pay</span>
+      <span class="text-lg font-semibold">{{ totalPrice | currency }}</span>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="paymentForm.invalid"
+      class="m-auto mt-20 flex items-center justify-center rounded-full bg-primary px-16 py-6 text-base uppercase tracking-widest text-white shadow-main-button">
+      CONFIRM ORDER
+    </button>
+  </form>
+</div>

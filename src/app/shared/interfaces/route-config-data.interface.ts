@@ -7,5 +7,6 @@ export interface RouteConfigData {
   headerMenuButtonVisible?: boolean;
   headerBackButtonVisible?: boolean;
   headerFavouriteButtonVisible?: boolean;
+  cartItemsVisible?: boolean;
   footerVisible?: boolean;
 }
