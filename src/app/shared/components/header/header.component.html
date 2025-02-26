@@ -46,7 +46,7 @@
       *ngIf="headerConfig.headerIcon"
       class="relative rounded-2xl shadow-orange-soft">
       <span
-        *ngIf="totalQuantity > 0"
+        *ngIf="headerConfig.cartItemsVisible && totalQuantity > 0"
         class="absolute -right-1 -top-0.5 rounded bg-secondary px-0.5 text-xs text-white">
         {{ totalQuantity }}
       </span>

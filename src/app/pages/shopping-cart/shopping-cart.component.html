@@ -1,5 +1,5 @@
 <div class="shopping-cart">
-  <form [formGroup]="cartForm" (ngSubmit)="updateCart()">
+  <form [formGroup]="cartForm" (ngSubmit)="onSubmit()">
     <div
       *ngFor="let item of items.controls; let i = index"
       [formGroup]="item"

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -9,8 +9,11 @@ import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
 import { QuantityControlComponent } from '../../shared/components/quantity-control/quantity-control.component';
 import { AddonCheckboxComponent } from '../../shared/components/addon-checkbox/addon-checkbox.component';
-import { startWith, Subscription } from 'rxjs';
+import { startWith } from 'rxjs';
 import { CartItemInterface } from '../../shared/interfaces/cart.interface';
+import { Router } from '@angular/router';
+import { ROUTES } from '../../shared/constants/routes.constants';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -24,15 +27,13 @@ import { CartItemInterface } from '../../shared/interfaces/cart.interface';
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.scss'],
 })
-export class ShoppingCartComponent implements OnInit, OnDestroy {
-  private formSubscription!: Subscription;
+export class ShoppingCartComponent implements OnInit {
   private fb = inject(FormBuilder);
   private cartService = inject(CartService);
+  private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   cartForm!: FormGroup;
-  subtotal = 0;
-  tax = 0;
-  delivery = 1.33;
   orderSummary: { label: string; value: number }[] = [];
 
   get items(): FormArray<FormGroup> {
@@ -45,8 +46,8 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
-    this.formSubscription = this.cartForm.valueChanges
-      .pipe(startWith(this.cartForm.value))
+    this.cartForm.valueChanges
+      .pipe(startWith(this.cartForm.value), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.updateCart();
         this.calculateTotals();
@@ -73,17 +74,14 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   private calculateTotals(): void {
-    const { subtotal, tax } = this.cartService.calculateTotals(
+    const { subtotal, delivery, tax, total } = this.cartService.calculateTotals(
       this.items.value
     );
-    this.subtotal = subtotal;
-    this.tax = tax;
-    const total = this.subtotal + this.tax + this.delivery;
 
     this.orderSummary = [
-      { label: 'Subtotal', value: this.subtotal },
-      { label: 'Tax and Fees', value: this.tax },
-      { label: 'Delivery', value: this.delivery },
+      { label: 'Subtotal', value: subtotal },
+      { label: 'Tax and Fees', value: tax },
+      { label: 'Delivery', value: delivery },
       { label: 'Total', value: total },
     ];
   }
@@ -104,7 +102,11 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     this.items.at(index).patchValue({ quantity: newQuantity });
   }
 
-  ngOnDestroy(): void {
-    this.formSubscription?.unsubscribe();
+  onSubmit(): void {
+    if (this.cartForm.valid) {
+      this.router.navigate([`${ROUTES.PAYMENT}`]);
+    } else {
+      console.log('Form is invalid');
+    }
   }
 }
