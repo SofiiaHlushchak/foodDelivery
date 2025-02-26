@@ -17,6 +17,7 @@ import { environment } from './environments/environment';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
+import { provideNgxMask } from 'ngx-mask';
 
 const googleLoginOptions: GoogleInitOptions = {
   oneTapEnabled: false,
@@ -27,6 +28,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
+    provideNgxMask(),
     provideHttpClient(withInterceptorsFromDi()),
     {
       provide: HTTP_INTERCEPTORS,

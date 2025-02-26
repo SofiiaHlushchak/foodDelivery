@@ -26,6 +26,10 @@ export class ControlErrorHandlerPipe implements PipeTransform {
         fieldName
       );
     }
+
+    if (errorKeys['expired']) {
+      return `${fieldName} cannot be in the past.`;
+    }
     return null;
   }
 
@@ -36,6 +40,7 @@ export class ControlErrorHandlerPipe implements PipeTransform {
         '/[a-z]/': `${fieldName} must contain at least one lowercase letter.`,
         '/\\d/': `${fieldName} must contain at least one digit.`,
         '/[@$!%*?&#]/': `${fieldName} must contain at least one special character.`,
+        '/^\\d{4}\\d{4}\\d{4}\\d{4}$/': `Please enter a valid ${fieldName}.`,
       }[pattern] || `Invalid ${fieldName} format.`
     );
   }
