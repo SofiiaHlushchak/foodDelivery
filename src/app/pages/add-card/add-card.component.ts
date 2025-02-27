@@ -2,6 +2,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -54,6 +55,22 @@ export class AddCardComponent implements OnInit {
     cvv: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
   });
 
+  get name(): FormControl {
+    return this.cardForm.get('name') as FormControl;
+  }
+
+  get number(): FormControl {
+    return this.cardForm.get('number') as FormControl;
+  }
+
+  get expires(): FormControl {
+    return this.cardForm.get('expires') as FormControl;
+  }
+
+  get cvv(): FormControl {
+    return this.cardForm.get('cvv') as FormControl;
+  }
+
   ngOnInit(): void {
     this.user$.subscribe(user => {
       if (user) {
@@ -74,9 +91,8 @@ export class AddCardComponent implements OnInit {
       };
 
       this.cardService.saveCard(cardData).subscribe(response => {
-        console.log('Card saved successfully!', response);
+        this.router.navigate([`${ROUTES.PAYMENT}`]);
       });
-      this.router.navigate([`${ROUTES.PAYMENT}`]);
     }
   }
 }

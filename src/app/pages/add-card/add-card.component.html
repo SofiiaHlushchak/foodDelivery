@@ -10,7 +10,7 @@
       id="name"
       formControlName="name"
       class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
-    <div *ngIf="cardForm.get('name')?.invalid && cardForm.get('name')?.touched">
+    <div *ngIf="name?.invalid && name?.touched">
       <small class="text-red-500">
         {{ cardForm.controls['name'].errors | controlErrorHandler: 'name' }}
       </small>
@@ -30,21 +30,18 @@
 
     <div class="absolute right-3 top-1/2">
       <img
-        *ngIf="cardForm.get('number')?.value?.startsWith('4')"
+        *ngIf="number?.value?.startsWith('4')"
         src="../../../assets/images/visa.png"
         alt="Visa"
         class="h-6 w-6" />
       <img
-        *ngIf="cardForm.get('number')?.value?.startsWith('5')"
+        *ngIf="number?.value?.startsWith('5')"
         src="../../../assets/images/mastercard.png"
         alt="MasterCard"
         class="h-6 w-6" />
     </div>
 
-    <div
-      *ngIf="
-        cardForm.get('number')?.invalid && cardForm.get('number')?.touched
-      ">
+    <div *ngIf="number?.invalid && number?.touched">
       <small class="absolute text-red-500">
         {{
           cardForm.controls['number'].errors
@@ -67,11 +64,7 @@
         maxlength="5"
         [dropSpecialCharacters]="false"
         [mask]="'00/00'" />
-      <div
-        *ngIf="
-          cardForm.get('expires')?.invalid && cardForm.get('expires')?.touched
-        "
-        class="text-red-500">
+      <div *ngIf="expires?.invalid && expires?.touched" class="text-red-500">
         <small class="text-red-500">
           {{
             cardForm.controls['expires'].errors | controlErrorHandler: 'Expires'
@@ -91,9 +84,7 @@
         class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary"
         placeholder="CVV"
         maxlength="3" />
-      <div
-        *ngIf="cardForm.get('cvv')?.invalid && cardForm.get('cvv')?.touched"
-        class="text-red-500">
+      <div *ngIf="cvv?.invalid && cvv?.touched" class="text-red-500">
         <small class="text-red-500">
           {{ cardForm.controls['cvv'].errors | controlErrorHandler: 'CVV' }}
         </small>
