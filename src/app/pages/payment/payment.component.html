@@ -52,12 +52,12 @@
         <label
           class="cursor-pointer rounded-lg border p-3"
           [ngClass]="{
-            'border-primary': paymentMethod.value === 'paypal',
+            'border-primary': paymentMethod.value === paymentMethodEnum.Paypal,
           }">
           <input
             type="radio"
             formControlName="paymentMethod"
-            value="paypal"
+            [value]="paymentMethodEnum.Paypal"
             class="hidden" />
           <img
             src="../../../assets/images/paypal.png"
@@ -70,12 +70,13 @@
         <label
           class="cursor-pointer rounded-lg border p-3"
           [ngClass]="{
-            'border-primary': paymentMethod.value === 'apple-pay',
+            'border-primary':
+              paymentMethod.value === paymentMethodEnum.ApplePay,
           }">
           <input
             type="radio"
             formControlName="paymentMethod"
-            value="apple-pay"
+            [value]="paymentMethodEnum.ApplePay"
             class="hidden" />
           <img
             src="../../../assets/images/apple-pay.png"
@@ -106,11 +107,7 @@
             {{ user.name }}
           </p>
           <img
-            [src]="
-              paymentMethod.value?.cardNumber?.startsWith('4')
-                ? '../../../assets/images/visa.png'
-                : '../../../assets/images/mastercard.png'
-            "
+            [src]="paymentMethod.value?.cardNumber | cardType"
             alt="Card"
             class="h-6 w-10" />
         </div>
@@ -129,5 +126,4 @@
       CONFIRM ORDER
     </button>
   </form>
-  <router-outlet />
 </div>

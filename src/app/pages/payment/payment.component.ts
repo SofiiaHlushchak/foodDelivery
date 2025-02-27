@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,19 +7,26 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { filter, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { CartService } from '../../services/cart.service';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CardService } from '../../services/card.service';
 import { PaymentCard } from '../../shared/interfaces/payment-card.interface';
 import { UserLoggedData } from '../../shared/interfaces/auth.interface';
 import { CardNumberPipe } from '../../shared/pipes/card-number.pipe';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { PaymentMethod } from '../../shared/enums/payment-method.enum';
+import { CardTypePipe } from '../../shared/pipes/card-type.pipe';
 
 @Component({
   selector: 'app-payment',
-  imports: [ReactiveFormsModule, CommonModule, RouterModule, CardNumberPipe],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    CardNumberPipe,
+    CardTypePipe,
+  ],
   templateUrl: './payment.component.html',
   styles: [
     `
@@ -36,8 +43,9 @@ export class PaymentComponent implements OnInit {
   private authService = inject(AuthService);
   private cartService = inject(CartService);
   private cardService = inject(CardService);
-  private router = inject(Router);
-  private destroyRef = inject(DestroyRef);
+  private cardTypePipe = inject(CardTypePipe);
+
+  paymentMethodEnum = PaymentMethod;
 
   user$: Observable<UserLoggedData | null> = this.authService.userSubject$;
 
@@ -54,17 +62,6 @@ export class PaymentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isAddCardRoute = this.router.url.includes('add-card');
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(() => {
-        this.isAddCardRoute = this.router.url.includes('add-card');
-        this.loadUserCards();
-      });
-
     this.initForm();
     this.loadUserCards();
   }
@@ -76,29 +73,26 @@ export class PaymentComponent implements OnInit {
   }
 
   loadUserCards() {
-    this.cardService
-      .getUserCards()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (cards: PaymentCard[]) => {
-          const userCards = cards.map(card => ({
-            value: card,
-            img: card.cardNumber.startsWith('4')
-              ? '../../../assets/images/visa.png'
-              : '../../../assets/images/mastercard.png',
-            alt: 'card',
-          }));
+    this.cardService.getUserCards().subscribe({
+      next: (cards: PaymentCard[]) => {
+        const userCards = cards.map(card => ({
+          value: card,
+          img:
+            this.cardTypePipe.transform(card.cardNumber) ??
+            '../../../assets/images/mastercard.png',
+          alt: 'card',
+        }));
 
-          this.paymentMethods = [...userCards];
+        this.paymentMethods = [...userCards];
 
-          if (this.paymentMethods.length) {
-            this.paymentForm.patchValue({
-              paymentMethod: this.paymentMethods[0].value,
-            });
-          }
-        },
-        error: error => console.error('Error loading user cards:', error),
-      });
+        if (this.paymentMethods.length) {
+          this.paymentForm.patchValue({
+            paymentMethod: this.paymentMethods[0].value,
+          });
+        }
+      },
+      error: error => console.error('Error loading user cards:', error),
+    });
   }
 
   submitForm() {

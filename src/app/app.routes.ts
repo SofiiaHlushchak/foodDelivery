@@ -70,19 +70,17 @@ export const routes: Routes = [
           headerIcon: true,
           headerIconClass: 'fa-solid fa-money-check',
         } as RouteConfigData,
-        children: [
-          {
-            path: 'add-card',
-            component: AddCardComponent,
-            canActivate: [AuthGuard],
-            data: {
-              headerBackButtonVisible: true,
-              headerTitle: 'Add New Card',
-              headerIcon: true,
-              headerIconClass: 'fa-solid fa-money-check',
-            } as RouteConfigData,
-          },
-        ],
+      },
+      {
+        path: `${ROUTES.PAYMENT}/${ROUTES.ADD_CARD}`,
+        component: AddCardComponent,
+        canActivate: [AuthGuard],
+        data: {
+          headerBackButtonVisible: true,
+          headerTitle: 'Add New Card',
+          headerIcon: true,
+          headerIconClass: 'fa-solid fa-money-check',
+        } as RouteConfigData,
       },
     ],
   },

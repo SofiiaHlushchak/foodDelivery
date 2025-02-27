@@ -1,5 +1,5 @@
 // add-card.component.ts
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -17,6 +17,8 @@ import { ControlErrorHandlerPipe } from '../../shared/pipes/control-error-handle
 import { ROUTES } from '../../shared/constants/routes.constants';
 import { Router } from '@angular/router';
 import { expirationDateValidator } from '../../shared/validators/validator';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CardTypePipe } from '../../shared/pipes/card-type.pipe';
 
 @Component({
   selector: 'app-add-card',
@@ -26,15 +28,24 @@ import { expirationDateValidator } from '../../shared/validators/validator';
     ReactiveFormsModule,
     NgxMaskDirective,
     ControlErrorHandlerPipe,
+    CardTypePipe,
   ],
   templateUrl: './add-card.component.html',
-  styleUrls: ['./add-card.component.css'],
+  styles: [
+    `
+      :host {
+        flex: 1;
+        margin-top: 100px;
+      }
+    `,
+  ],
 })
 export class AddCardComponent implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private cardService = inject(CardService);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   user$: Observable<UserLoggedData | null> = this.authService.userSubject$;
 
@@ -72,7 +83,7 @@ export class AddCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user$.subscribe(user => {
+    this.user$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(user => {
       if (user) {
         this.cardForm.patchValue({
           name: user.name,
@@ -90,7 +101,7 @@ export class AddCardComponent implements OnInit {
         expirationDate: formValues.expires,
       };
 
-      this.cardService.saveCard(cardData).subscribe(response => {
+      this.cardService.saveCard(cardData).subscribe(() => {
         this.router.navigate([`${ROUTES.PAYMENT}`]);
       });
     }

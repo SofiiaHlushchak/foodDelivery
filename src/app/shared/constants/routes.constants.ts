@@ -11,4 +11,5 @@ export const ROUTES = {
   CART: 'cart',
   PROFILE: 'profile',
   PAYMENT: 'payment',
+  ADD_CARD: 'add-card',
 };
