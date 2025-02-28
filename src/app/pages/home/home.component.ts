@@ -13,6 +13,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FilterSidebarComponent } from '../../shared/components/filter-sidebar/filter-sidebar.component';
 import { CATEGORIES } from '../../shared/constants/categories.const';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ResponsiveDirective } from '../../shared/directives/responsive.directive';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatProgressBarModule,
     ReactiveFormsModule,
     FilterSidebarComponent,
+    ResponsiveDirective,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
