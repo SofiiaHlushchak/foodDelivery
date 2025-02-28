@@ -12,6 +12,7 @@ import { foodItemDetailsRoutes } from './pages/food-item-details/food-item-detai
 import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { PaymentComponent } from './pages/payment/payment.component';
+import { AddCardComponent } from './pages/add-card/add-card.component';
 
 export const routes: Routes = [
   {
@@ -66,6 +67,17 @@ export const routes: Routes = [
         data: {
           headerBackButtonVisible: true,
           headerTitle: 'Payment',
+          headerIcon: true,
+          headerIconClass: 'fa-solid fa-money-check',
+        } as RouteConfigData,
+      },
+      {
+        path: `${ROUTES.PAYMENT}/${ROUTES.ADD_CARD}`,
+        component: AddCardComponent,
+        canActivate: [AuthGuard],
+        data: {
+          headerBackButtonVisible: true,
+          headerTitle: 'Add New Card',
           headerIcon: true,
           headerIconClass: 'fa-solid fa-money-check',
         } as RouteConfigData,
