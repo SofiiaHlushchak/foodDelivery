@@ -92,6 +92,11 @@
     <button
       type="submit"
       [disabled]="cardForm.invalid"
+      [ngStyle]="{
+        cursor: cardForm.invalid ? 'not-allowed' : 'pointer',
+        opacity: cardForm.invalid ? '0.5' : '1',
+      }"
+      appTooltip="Click to submit the form"
       class="m-auto flex min-w-64 items-center justify-center rounded-full bg-primary px-16 py-6 text-base uppercase tracking-widest text-white shadow-main-button">
       Save
     </button>

@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 import { expirationDateValidator } from '../../shared/validators/validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CardTypePipe } from '../../shared/pipes/card-type.pipe';
+import { TooltipDirective } from '../../shared/directives/tooltip.directive';
 
 @Component({
   selector: 'app-add-card',
@@ -29,6 +30,7 @@ import { CardTypePipe } from '../../shared/pipes/card-type.pipe';
     NgxMaskDirective,
     ControlErrorHandlerPipe,
     CardTypePipe,
+    TooltipDirective,
   ],
   templateUrl: './add-card.component.html',
   styles: [

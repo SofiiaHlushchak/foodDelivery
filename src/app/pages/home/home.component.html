@@ -1,7 +1,12 @@
 <div class="home">
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async" />
 
-  <h1 class="title-first">What would you like to order</h1>
+  <h1 *appIfViewport="'mobile'" class="title-first">
+    What would you like to order(mobile)
+  </h1>
+  <h1 *appIfViewport="'desktop'" class="title-first">
+    What would you like to order(desktop)
+  </h1>
 
   <form [formGroup]="searchForm" class="relative">
     <div class="mt-4 grid grid-cols-[1fr_auto] items-center gap-2">
