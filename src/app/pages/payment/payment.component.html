@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <div class="mt-6 min-h-56">
+    <div class="mt-6 min-h-64">
       <div
         *ngIf="paymentMethod.value?.cardNumber"
         class="mx-auto rounded-lg bg-gradient-to-r from-pink-400 via-pink-500 to-purple-500 p-6 text-white shadow-[0px_10px_30px_0px_#E9A3A559] sm:w-3/4 md:w-2/3 lg:w-3/5 xl:w-2/5">
@@ -112,16 +112,24 @@
             class="h-6 w-10" />
         </div>
       </div>
+
+      <div *ngIf="paymentMethod.value === paymentMethodEnum.Paypal">
+        <ngx-paypal [config]="paypalConfig" />
+      </div>
     </div>
 
-    <div class="mt-6 flex items-center justify-between">
+    <div class="flex items-center justify-between">
       <span class="text-lg font-semibold">Total Pay</span>
       <span class="text-lg font-semibold">{{ totalPrice | currency }}</span>
     </div>
 
     <button
       type="submit"
-      [disabled]="paymentForm.invalid"
+      [disabled]="isButtonDisabled"
+      [ngStyle]="{
+        cursor: isButtonDisabled ? 'not-allowed' : 'pointer',
+        opacity: isButtonDisabled ? '0.5' : '1',
+      }"
       class="m-auto mt-20 flex items-center justify-center rounded-full bg-primary px-16 py-6 text-base uppercase tracking-widest text-white shadow-main-button">
       CONFIRM ORDER
     </button>
