@@ -21,6 +21,7 @@ import { NgxPayPalModule, IPayPalConfig, IOrderDetails } from 'ngx-paypal';
 import { NotificationService } from '../../services/notification.service';
 import { ROUTES } from '../../shared/constants/routes.constants';
 import { environment } from '../../environments/environment';
+import { ApplePayService } from '../../services/apple-pay.service';
 
 @Component({
   selector: 'app-payment',
@@ -43,7 +44,6 @@ import { environment } from '../../environments/environment';
   ],
 })
 export class PaymentComponent implements OnInit {
-  isAddCardRoute = false;
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private cartService = inject(CartService);
@@ -51,6 +51,9 @@ export class PaymentComponent implements OnInit {
   private cardTypePipe = inject(CardTypePipe);
   private notificationService = inject(NotificationService);
   private router = inject(Router);
+  private applePayService = inject(ApplePayService);
+
+  applePayQRCode: string | null = null;
 
   paymentMethodEnum = PaymentMethod;
 
@@ -119,6 +122,12 @@ export class PaymentComponent implements OnInit {
     );
 
     this.router.navigate([`${ROUTES.ORDERS}`]);
+  }
+
+  async generateApplePayQR() {
+    this.applePayQRCode = await this.applePayService.generateApplePayQR(
+      this.totalPrice
+    );
   }
 
   paypalConfig: IPayPalConfig = {

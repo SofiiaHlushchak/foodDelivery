@@ -1,9 +1,6 @@
 <div
   class="m-auto flex w-full flex-col justify-center sm:w-3/4 md:w-2/3 lg:w-3/5 xl:w-3/5 2xl:w-1/2">
-  <form
-    [formGroup]="paymentForm"
-    (ngSubmit)="submitForm()"
-    *ngIf="!isAddCardRoute">
+  <form [formGroup]="paymentForm" (ngSubmit)="submitForm()">
     <div class="mb-6">
       <h3 class="text-lg font-semibold">Shipping to</h3>
       <div class="mt-2 flex items-center">
@@ -72,7 +69,11 @@
           [ngClass]="{
             'border-primary':
               paymentMethod.value === paymentMethodEnum.ApplePay,
-          }">
+          }"
+          (click)="generateApplePayQR()"
+          (keydown.enter)="generateApplePayQR()"
+          (keydown.space)="generateApplePayQR()"
+          tabindex="0">
           <input
             type="radio"
             formControlName="paymentMethod"
@@ -86,7 +87,7 @@
       </div>
     </div>
 
-    <div class="mt-6 min-h-64">
+    <div class="mt-6 flex min-h-64 items-center justify-center">
       <div
         *ngIf="paymentMethod.value?.cardNumber"
         class="mx-auto rounded-lg bg-gradient-to-r from-pink-400 via-pink-500 to-purple-500 p-6 text-white shadow-[0px_10px_30px_0px_#E9A3A559] sm:w-3/4 md:w-2/3 lg:w-3/5 xl:w-2/5">
@@ -115,6 +116,18 @@
 
       <div *ngIf="paymentMethod.value === paymentMethodEnum.Paypal">
         <ngx-paypal [config]="paypalConfig" />
+      </div>
+
+      <div *ngIf="paymentMethod.value === paymentMethodEnum.ApplePay">
+        <div *ngIf="applePayQRCode" class="flex flex-col items-center">
+          <img
+            [src]="applePayQRCode"
+            alt="Apple Pay QR Code"
+            class="h-40 w-40" />
+          <p class="mt-2 text-sm text-gray-500">
+            Scan the QR code to proceed with payment
+          </p>
+        </div>
       </div>
     </div>
 
