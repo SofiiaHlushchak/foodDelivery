@@ -4,4 +4,6 @@ export const environment = {
   googleClientId:
     '1034285752701-56oqiq427er5dpf988vd21p505pop5ht.apps.googleusercontent.com',
   facebookClientId: '2062234270964599',
+  payPalClientId:
+    'Adeb9fqNcMQTUyIwGDmNn4uYtuhbLPFps9dYInonbI6wgWzqqZY_cBExHgBnfsOG2n7GFJuautQNILYc',
 };

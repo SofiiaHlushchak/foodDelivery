@@ -13,6 +13,7 @@ import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.compo
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { PaymentComponent } from './pages/payment/payment.component';
 import { AddCardComponent } from './pages/add-card/add-card.component';
+import { OrdersComponent } from './pages/orders/orders.component';
 
 export const routes: Routes = [
   {
@@ -80,6 +81,16 @@ export const routes: Routes = [
           headerTitle: 'Add New Card',
           headerIcon: true,
           headerIconClass: 'fa-solid fa-money-check',
+        } as RouteConfigData,
+      },
+      {
+        path: `${ROUTES.ORDERS}`,
+        component: OrdersComponent,
+        canActivate: [AuthGuard],
+        data: {
+          headerBackButtonVisible: true,
+          headerTitle: 'My Orders',
+          headerPictureDisplay: true,
         } as RouteConfigData,
       },
     ],

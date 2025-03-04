@@ -10,13 +10,17 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { CartService } from '../../services/cart.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CardService } from '../../services/card.service';
 import { PaymentCard } from '../../shared/interfaces/payment-card.interface';
 import { UserLoggedData } from '../../shared/interfaces/auth.interface';
 import { CardNumberPipe } from '../../shared/pipes/card-number.pipe';
 import { PaymentMethod } from '../../shared/enums/payment-method.enum';
 import { CardTypePipe } from '../../shared/pipes/card-type.pipe';
+import { NgxPayPalModule, IPayPalConfig, IOrderDetails } from 'ngx-paypal';
+import { NotificationService } from '../../services/notification.service';
+import { ROUTES } from '../../shared/constants/routes.constants';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-payment',
@@ -26,6 +30,7 @@ import { CardTypePipe } from '../../shared/pipes/card-type.pipe';
     RouterModule,
     CardNumberPipe,
     CardTypePipe,
+    NgxPayPalModule,
   ],
   templateUrl: './payment.component.html',
   styles: [
@@ -44,6 +49,8 @@ export class PaymentComponent implements OnInit {
   private cartService = inject(CartService);
   private cardService = inject(CardService);
   private cardTypePipe = inject(CardTypePipe);
+  private notificationService = inject(NotificationService);
+  private router = inject(Router);
 
   paymentMethodEnum = PaymentMethod;
 
@@ -59,6 +66,13 @@ export class PaymentComponent implements OnInit {
 
   get paymentMethod(): FormControl {
     return this.paymentForm.get('paymentMethod') as FormControl;
+  }
+
+  get isButtonDisabled(): boolean {
+    return (
+      this.paymentForm.invalid ||
+      this.paymentMethod.value === this.paymentMethodEnum.Paypal
+    );
   }
 
   ngOnInit(): void {
@@ -103,5 +117,48 @@ export class PaymentComponent implements OnInit {
         : 'Please select a payment method!',
       paymentData
     );
+
+    this.router.navigate([`${ROUTES.ORDERS}`]);
   }
+
+  paypalConfig: IPayPalConfig = {
+    clientId: environment.payPalClientId,
+    currency: 'USD',
+    createOrderOnClient: () => {
+      return {
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: {
+              value: this.totalPrice.toFixed(2),
+              currency_code: 'USD',
+            },
+            items: [],
+          },
+        ],
+      };
+    },
+    onApprove: (_, actions) => {
+      return actions.order.capture().then((details: IOrderDetails) => {
+        if (details.payer && details.payer.name) {
+          console.log(
+            'Transaction completed by ' + details.payer.name.given_name
+          );
+          this.notificationService.showMessage(
+            'Payment successful and order created'
+          );
+          this.submitForm();
+        } else {
+          this.notificationService.showMessage('Payer information is missing');
+        }
+      });
+    },
+    onCancel: () => {
+      this.notificationService.showMessage('Payment cancelled');
+    },
+    onError: err => {
+      console.error('PayPal Payment Error: ', err);
+      this.notificationService.showMessage('An error occurred during payment');
+    },
+  };
 }
