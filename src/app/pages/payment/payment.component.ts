@@ -157,6 +157,7 @@ export class PaymentComponent implements OnInit {
 
     this.orderService.createOrder(order).subscribe({
       next: () => {
+        localStorage.removeItem('cart');
         this.router.navigate([`${ROUTES.ORDERS}`]);
       },
       error: error => console.error('Error creating order:', error),
