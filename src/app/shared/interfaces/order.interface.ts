@@ -6,4 +6,7 @@ export interface Order {
   foodItems: CartItemInterface[];
   paymentMethod?: PaymentMethod;
   cardNumber?: string;
+  status?: string;
+  number?: number;
+  createdAt?: Date;
 }
