@@ -22,6 +22,10 @@ import { NotificationService } from '../../services/notification.service';
 import { ROUTES } from '../../shared/constants/routes.constants';
 import { environment } from '../../environments/environment';
 import { ApplePayService } from '../../services/apple-pay.service';
+import { AddonInterface } from '../../shared/interfaces/food-item.interface';
+import { CartItemInterface } from '../../shared/interfaces/cart.interface';
+import { OrderService } from '../../services/order.service';
+import { Order } from '../../shared/interfaces/order.interface';
 
 @Component({
   selector: 'app-payment',
@@ -52,6 +56,7 @@ export class PaymentComponent implements OnInit {
   private notificationService = inject(NotificationService);
   private router = inject(Router);
   private applePayService = inject(ApplePayService);
+  private orderService = inject(OrderService);
 
   applePayQRCode: string | null = null;
 
@@ -112,16 +117,50 @@ export class PaymentComponent implements OnInit {
     });
   }
 
+  getFoodItemsFromCart() {
+    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+
+    return cartItems.map((item: CartItemInterface) => ({
+      foodId: item.dish?._id,
+      quantity: item.quantity,
+      addons: item.addons.map((addon: AddonInterface) => ({
+        name: addon.name,
+        price: addon.price,
+        countable: addon.countable,
+      })),
+    }));
+  }
+
   submitForm() {
     const paymentData = this.paymentForm.value;
-    console.log(
-      paymentData.paymentMethod
-        ? 'Payment Data:'
-        : 'Please select a payment method!',
-      paymentData
-    );
 
-    this.router.navigate([`${ROUTES.ORDERS}`]);
+    const order: Order = {
+      totalPrice: this.totalPrice,
+      foodItems: this.getFoodItemsFromCart(),
+    };
+
+    if (
+      typeof paymentData.paymentMethod === 'object' &&
+      paymentData.paymentMethod.cardNumber
+    ) {
+      order.paymentMethod = PaymentMethod.Card;
+      order.cardNumber = paymentData.paymentMethod.cardNumber;
+    } else if (
+      paymentData.paymentMethod === PaymentMethod.Paypal ||
+      paymentData.paymentMethod === PaymentMethod.ApplePay
+    ) {
+      order.paymentMethod = paymentData.paymentMethod as PaymentMethod;
+    } else {
+      console.log('Invalid payment method!');
+      return;
+    }
+
+    this.orderService.createOrder(order).subscribe({
+      next: () => {
+        this.router.navigate([`${ROUTES.ORDERS}`]);
+      },
+      error: error => console.error('Error creating order:', error),
+    });
   }
 
   async generateApplePayQR() {
