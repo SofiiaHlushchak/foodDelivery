@@ -22,7 +22,7 @@ export class SidebarComponent {
   }
 
   menuItems = [
-    { label: 'My Orders', icon: 'fa-solid fa-list', href: '/' },
+    { label: 'My Orders', icon: 'fa-solid fa-list', href: `${ROUTES.ORDERS}` },
     {
       label: 'My Profile',
       icon: 'fa-solid fa-user',
