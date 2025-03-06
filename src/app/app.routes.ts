@@ -14,6 +14,7 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { PaymentComponent } from './pages/payment/payment.component';
 import { AddCardComponent } from './pages/add-card/add-card.component';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { OrdersResolver } from './resolvers/orders.resolver';
 
 export const routes: Routes = [
   {
@@ -86,6 +87,9 @@ export const routes: Routes = [
       {
         path: `${ROUTES.ORDERS}`,
         component: OrdersComponent,
+        resolve: {
+          orders: OrdersResolver,
+        },
         canActivate: [AuthGuard],
         data: {
           headerBackButtonVisible: true,

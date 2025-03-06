@@ -7,13 +7,17 @@
         class="h-16 w-16 rounded-xl shadow-md" />
     </div>
     <div>
-      <div class="text-xs text-gray-manatee" *ngIf="orderType === 'upcoming'">
+      <div
+        class="text-xs text-gray-manatee"
+        *ngIf="orderType === OrderType.Upcoming">
         {{ order.foodItems.length }}
         {{
           order.foodItems.length | i18nPlural: { '=1': 'item', other: 'items' }
         }}
       </div>
-      <div class="flex items-center gap-1.5" *ngIf="orderType === 'history'">
+      <div
+        class="flex items-center gap-1.5"
+        *ngIf="orderType === OrderType.History">
         <span class="text-xs text-gray-manatee">
           {{ order.createdAt | date: 'd MMM, HH:mm' }}
         </span>
@@ -28,15 +32,15 @@
       </div>
       <p class="font-semibold">Order #{{ order.number }}</p>
       <p
-        *ngIf="orderType === 'upcoming'"
+        *ngIf="orderType === OrderType.Upcoming"
         class="text-xs"
         [ngClass]="getStatusClass(order.status)">
         {{ getStatusText(order.status) }}
       </p>
       <p
-        *ngIf="orderType === 'history'"
+        *ngIf="orderType === OrderType.History"
         class="text-xs"
-        [ngClass]="getStatusClass(order.status || 'unknown')">
+        [ngClass]="getStatusClass(order.status)">
         {{ order.status }}
       </p>
     </div>
@@ -49,7 +53,7 @@
       type="button"
       class="w-full rounded-full border-2 border-primary py-3.5 text-primary">
       {{
-        orderType === 'upcoming' && order.status !== 'delivered'
+        orderType === OrderType.Upcoming && order.status !== 'delivered'
           ? 'Cancel'
           : 'Rate'
       }}
@@ -58,7 +62,7 @@
       type="button"
       class="w-full rounded-full bg-primary py-3.5 text-white shadow-orange-soft">
       {{
-        orderType === 'upcoming' && order.status !== 'delivered'
+        orderType === OrderType.Upcoming && order.status !== 'delivered'
           ? 'Track Order'
           : 'Re-Order'
       }}

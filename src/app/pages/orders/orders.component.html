@@ -2,30 +2,30 @@
   class="m-auto flex w-full flex-col justify-center sm:w-3/4 md:w-2/3 lg:w-3/5 xl:w-3/5 2xl:w-1/2">
   <div class="grid w-full grid-cols-2 rounded-full border p-1">
     <button
-      (click)="switchTab('upcoming')"
-      [ngClass]="{ 'bg-primary text-white': activeTab === 'upcoming' }"
+      (click)="switchTab(OrderType.Upcoming)"
+      [ngClass]="{ 'bg-primary text-white': activeTab === OrderType.Upcoming }"
       class="w-full rounded-full py-4 text-center text-primary transition-colors duration-300">
       Upcoming
     </button>
     <button
-      (click)="switchTab('history')"
-      [ngClass]="{ 'bg-primary text-white': activeTab === 'history' }"
+      (click)="switchTab(OrderType.History)"
+      [ngClass]="{ 'bg-primary text-white': activeTab === OrderType.History }"
       class="w-full rounded-full py-4 text-center text-primary transition-colors duration-300">
       History
     </button>
   </div>
 
-  <div *ngIf="activeTab === 'upcoming'" class="mt-4 space-y-4">
+  <div *ngIf="activeTab === OrderType.Upcoming" class="mt-4 space-y-4">
     <app-order-card
       *ngFor="let order of upcomingOrders"
       [order]="order"
-      [orderType]="'upcoming'"></app-order-card>
+      [orderType]="OrderType.Upcoming"></app-order-card>
   </div>
 
-  <div *ngIf="activeTab === 'history'" class="mt-4 space-y-4">
+  <div *ngIf="activeTab === OrderType.History" class="mt-4 space-y-4">
     <app-order-card
       *ngFor="let order of historyOrders"
       [order]="order"
-      [orderType]="'history'"></app-order-card>
+      [orderType]="OrderType.History"></app-order-card>
   </div>
 </div>

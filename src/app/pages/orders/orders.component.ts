@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { OrderService } from '../../services/order.service';
+import { ActivatedRoute } from '@angular/router';
 import { Order } from '../../shared/interfaces/order.interface';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { OrderCardComponent } from '../../shared/components/order-card/order-card.component';
+import { OrderStatus } from '../../shared/enums/order-status.enum';
+import { OrderType } from '../../shared/enums/order-type.enum';
 
 @Component({
   selector: 'app-orders',
@@ -19,40 +20,37 @@ import { OrderCardComponent } from '../../shared/components/order-card/order-car
   ],
 })
 export class OrdersComponent implements OnInit {
-  private orderService = inject(OrderService);
+  private route = inject(ActivatedRoute);
   upcomingOrders: Order[] = [];
   historyOrders: Order[] = [];
-  activeTab: 'upcoming' | 'history' = 'upcoming';
-  orders$: Observable<Order[] | null> = this.orderService.orders$;
+  activeTab: OrderType = OrderType.Upcoming;
+
+  OrderType = OrderType;
 
   ngOnInit(): void {
-    this.orderService.getCachedUserOrders().subscribe();
-    this.loadOrders();
+    const orders = this.route.snapshot.data['orders'];
+    if (orders) {
+      const sortedOrders = orders.sort(
+        (a: Order, b: Order) =>
+          new Date(b.createdAt ?? 0).getTime() -
+          new Date(a.createdAt ?? 0).getTime()
+      );
+
+      this.upcomingOrders = sortedOrders.filter(
+        (order: Order) =>
+          order.status === OrderStatus.Pending ||
+          order.status === OrderStatus.Confirmed ||
+          order.status === OrderStatus.Shipped
+      );
+      this.historyOrders = sortedOrders.filter(
+        (order: Order) =>
+          order.status === OrderStatus.Delivered ||
+          order.status === OrderStatus.Cancelled
+      );
+    }
   }
 
-  loadOrders(): void {
-    this.orders$.subscribe(orders => {
-      if (orders) {
-        const sortedOrders = orders.sort(
-          (a, b) =>
-            new Date(b.createdAt ?? 0).getTime() -
-            new Date(a.createdAt ?? 0).getTime()
-        );
-
-        this.upcomingOrders = sortedOrders.filter(
-          order =>
-            order.status === 'pending' ||
-            order.status === 'confirmed' ||
-            order.status === 'shipped'
-        );
-        this.historyOrders = sortedOrders.filter(
-          order => order.status === 'delivered' || order.status === 'cancelled'
-        );
-      }
-    });
-  }
-
-  switchTab(tab: 'upcoming' | 'history'): void {
+  switchTab(tab: OrderType): void {
     this.activeTab = tab;
   }
 }

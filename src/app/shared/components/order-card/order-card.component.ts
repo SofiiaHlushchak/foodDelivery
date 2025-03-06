@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Order } from '../../interfaces/order.interface';
 import { CommonModule } from '@angular/common';
+import { OrderType } from '../../enums/order-type.enum';
+import { OrderStatus } from '../../enums/order-status.enum';
 
 @Component({
   selector: 'app-order-card',
@@ -10,7 +12,9 @@ import { CommonModule } from '@angular/common';
 })
 export class OrderCardComponent {
   @Input() order!: Order;
-  @Input() orderType!: 'upcoming' | 'history';
+  @Input() orderType!: OrderType;
+
+  OrderType = OrderType;
 
   getFoodImageUrl(order: Order): string {
     return order.foodItems.length > 0 && order.foodItems[0].dish.imgUrl
@@ -18,32 +22,32 @@ export class OrderCardComponent {
       : 'path_to_default_image.jpg';
   }
 
-  getStatusText(status?: string): string {
+  getStatusText(status?: OrderStatus): string {
     switch (status) {
-      case 'pending':
+      case OrderStatus.Pending:
         return 'Awaiting Confirmation';
-      case 'confirmed':
+      case OrderStatus.Confirmed:
         return 'Order Confirmed';
-      case 'shipped':
+      case OrderStatus.Shipped:
         return 'Food on the way';
-      case 'delivered':
+      case OrderStatus.Delivered:
         return 'Delivered';
-      case 'cancelled':
+      case OrderStatus.Cancelled:
         return 'Cancelled';
       default:
         return 'Unknown status';
     }
   }
 
-  getStatusClass(status?: string): string {
+  getStatusClass(status?: OrderStatus): string {
     switch (status) {
-      case 'pending':
-      case 'confirmed':
-      case 'shipped':
+      case OrderStatus.Pending:
+      case OrderStatus.Confirmed:
+      case OrderStatus.Shipped:
         return 'text-secondary';
-      case 'delivered':
+      case OrderStatus.Delivered:
         return 'text-green-500';
-      case 'cancelled':
+      case OrderStatus.Cancelled:
         return 'text-red-500';
       default:
         return 'text-gray-500';
