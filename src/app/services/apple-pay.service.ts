@@ -28,10 +28,6 @@ export class ApplePayService {
 
   async generateApplePayQR(totalPrice: number): Promise<string | null> {
     await this.initStripe();
-    if (!this.stripe) {
-      console.error('Stripe is not initialized');
-      return null;
-    }
 
     if (totalPrice <= 0) {
       console.error('Invalid order amount');
@@ -44,8 +40,7 @@ export class ApplePayService {
       );
       const stripePaymentLink = response.url;
 
-      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(stripePaymentLink)}`;
-      return qrCodeUrl;
+      return `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(stripePaymentLink)}`;
     } catch (error) {
       console.error('Error generating QR code:', error);
       return null;
