@@ -9,4 +9,5 @@ export interface RouteConfigData {
   headerFavouriteButtonVisible?: boolean;
   cartItemsVisible?: boolean;
   footerVisible?: boolean;
+  pagePaddingHidden?: boolean;
 }

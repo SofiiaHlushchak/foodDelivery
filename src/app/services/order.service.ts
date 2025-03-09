@@ -44,4 +44,8 @@ export class OrderService {
 
     return cachedOrders?.length ? of(cachedOrders) : this.getUserOrders();
   }
+
+  getOrderById(orderId: string): Observable<Order> {
+    return this.http.get<Order>(`${this.apiUrl}/${orderId}`);
+  }
 }

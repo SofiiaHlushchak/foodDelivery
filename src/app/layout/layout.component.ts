@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  HostBinding,
+} from '@angular/core';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -49,6 +55,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
   layoutConfig!: RouteConfigData;
   isSidebarOpen = false;
   isRestaurantFavourite?: boolean;
+
+  @HostBinding('style.padding')
+  get paddingStyle() {
+    return this.layoutConfig.pagePaddingHidden ? '0px' : '25px';
+  }
 
   ngOnInit(): void {
     this.subscribeToRouterEvents();

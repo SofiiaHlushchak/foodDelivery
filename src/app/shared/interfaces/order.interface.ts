@@ -3,6 +3,7 @@ import { PaymentMethod } from '../enums/payment-method.enum';
 import { CartItemInterface } from './cart.interface';
 
 export interface Order {
+  _id?: string;
   totalPrice: number;
   foodItems: CartItemInterface[];
   paymentMethod?: PaymentMethod;
