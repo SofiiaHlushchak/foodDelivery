@@ -13,4 +13,5 @@ export const ROUTES = {
   PAYMENT: 'payment',
   ADD_CARD: 'add-card',
   ORDERS: 'orders',
+  TRACK: 'track',
 };

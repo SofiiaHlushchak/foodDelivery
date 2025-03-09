@@ -3,10 +3,12 @@ import { Order } from '../../interfaces/order.interface';
 import { CommonModule } from '@angular/common';
 import { OrderType } from '../../enums/order-type.enum';
 import { OrderStatus } from '../../enums/order-status.enum';
+import { RouterModule } from '@angular/router';
+import { ROUTES } from '../../constants/routes.constants';
 
 @Component({
   selector: 'app-order-card',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './order-card.component.html',
   styleUrls: ['./order-card.component.css'],
 })
@@ -15,6 +17,7 @@ export class OrderCardComponent {
   @Input() orderType!: OrderType;
 
   OrderType = OrderType;
+  ROUTES = ROUTES;
 
   getFoodImageUrl(order: Order): string {
     return order.foodItems.length > 0 && order.foodItems[0].dish.imgUrl

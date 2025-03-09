@@ -1,0 +1,50 @@
+<div>
+  <app-google-map
+    [order]="order"
+    height="50vh"
+    (distanceChange)="updateDistance($event)"
+    (statusChange)="updateOrderStatus($event)"></app-google-map>
+  <div class="fixed bottom-0 left-0 right-0 top-1/2 bg-primary">
+    <div
+      class="relative flex justify-between gap-20 p-6 text-sm text-white before:absolute before:left-1/2 before:top-1/2 before:h-12 before:w-[1px] before:-translate-y-1/2 before:bg-white before:opacity-50">
+      <p class="w-full">
+        <span class="opacity-70">Distance</span>
+        <br />
+        <span class="text-4xl font-semibold">{{ distance }}</span>
+        km
+      </p>
+      <p class="w-full">
+        <span class="opacity-70">Delivery place</span>
+        <br />
+        {{ user?.deliveryAddress?.street }}, {{ user?.deliveryAddress?.city }},
+        {{ user?.deliveryAddress?.region }}
+      </p>
+    </div>
+    <div class="h-full rounded-t-3xl bg-white px-6 py-8">
+      <ul
+        class="flex flex-col gap-8 border-l-2 border-dashed border-gray-manatee">
+        <li
+          *ngFor="let status of statuses; index as i"
+          class="relative pl-4 before:absolute before:left-[-1px] before:h-6 before:w-6 before:-translate-x-1/2 before:rounded-full before:border-2 before:border-gray-manatee before:bg-white"
+          [ngClass]="{
+            'before:border-primary after:absolute after:left-[-1px] after:top-1/2 after:h-3 after:w-3 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:bg-primary':
+              activeStatusIndex >= i,
+          }">
+          <p class="flex justify-between">
+            {{ getStatusText(status) }}
+            <span
+              *ngIf="status === OrderStatus.Pending"
+              class="text-xs text-gray-manatee">
+              {{ order.createdAt | date: 'shortTime' }}
+            </span>
+            <span
+              *ngIf="status !== OrderStatus.Pending && statusUpdatedAt[status]"
+              class="text-xs text-gray-manatee">
+              {{ statusUpdatedAt[status] | date: 'shortTime' }}
+            </span>
+          </p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -60,6 +60,7 @@
     </button>
     <button
       type="button"
+      [routerLink]="[order._id, ROUTES.TRACK]"
       class="w-full rounded-full bg-primary py-3.5 text-white shadow-orange-soft">
       {{
         orderType === OrderType.Upcoming && order.status !== 'delivered'

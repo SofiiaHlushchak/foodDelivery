@@ -14,6 +14,7 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { PaymentComponent } from './pages/payment/payment.component';
 import { AddCardComponent } from './pages/add-card/add-card.component';
 import { ordersRoutes } from './pages/orders/orders.routes';
+import { trackOrderRoutes } from './pages/track-order/track-order.routes';
 
 export const routes: Routes = [
   {
@@ -84,6 +85,7 @@ export const routes: Routes = [
         } as RouteConfigData,
       },
       ...ordersRoutes,
+      ...trackOrderRoutes,
     ],
   },
   {
