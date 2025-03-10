@@ -63,6 +63,16 @@ export class RestaurantsService {
     return this.http.get<RestaurantInterface>(`${this.restaurantsUrl}/${id}`);
   }
 
+  updateRating(
+    restaurantId: string,
+    rating: number
+  ): Observable<RestaurantInterface> {
+    return this.http.put<RestaurantInterface>(
+      `${this.restaurantsUrl}/${restaurantId}/update-rating`,
+      { rating }
+    );
+  }
+
   toggleFavourite(itemId: string): void {
     this.restaurantsSubject.next(
       this.restaurantsSubject

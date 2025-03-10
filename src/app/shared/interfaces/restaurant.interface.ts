@@ -15,4 +15,5 @@ export interface RestaurantInterface {
   categories?: string[];
   verified?: boolean;
   foodItems?: FoodItemInterface[];
+  address?: string;
 }

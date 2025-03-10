@@ -15,6 +15,7 @@ import { PaymentComponent } from './pages/payment/payment.component';
 import { AddCardComponent } from './pages/add-card/add-card.component';
 import { ordersRoutes } from './pages/orders/orders.routes';
 import { trackOrderRoutes } from './pages/track-order/track-order.routes';
+import { reviewRestaurantRoutes } from './pages/review-restaurant/review-restaurant.routes';
 
 export const routes: Routes = [
   {
@@ -86,6 +87,7 @@ export const routes: Routes = [
       },
       ...ordersRoutes,
       ...trackOrderRoutes,
+      ...reviewRestaurantRoutes,
     ],
   },
   {
