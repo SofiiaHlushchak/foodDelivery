@@ -14,4 +14,5 @@ export const ROUTES = {
   ADD_CARD: 'add-card',
   ORDERS: 'orders',
   TRACK: 'track',
+  FEEDBACK: 'feedback',
 };
