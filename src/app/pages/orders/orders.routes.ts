@@ -17,6 +17,7 @@ export const ordersRoutes: Routes = [
       headerBackButtonVisible: true,
       headerTitle: 'My Orders',
       headerPictureDisplay: true,
+      footerVisible: true,
     } as RouteConfigData,
   },
 ];

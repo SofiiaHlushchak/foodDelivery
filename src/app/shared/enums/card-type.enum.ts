@@ -1,4 +1,4 @@
 export enum CardTypeEnum {
-  Restaurant,
-  Dish,
+  Restaurant = 'restaurant',
+  Dish = 'dish',
 }

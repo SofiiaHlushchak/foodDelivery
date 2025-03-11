@@ -15,6 +15,7 @@ import { OrderType } from '../../shared/enums/order-type.enum';
       :host {
         flex: 1;
         margin-top: 100px;
+        margin-bottom: 84px;
       }
     `,
   ],

@@ -55,17 +55,20 @@
       {{
         orderType === OrderType.Upcoming && order.status !== 'delivered'
           ? 'Cancel'
-          : 'Rate'
+          : 'Re-Order'
       }}
     </button>
     <button
       type="button"
-      [routerLink]="[order._id, ROUTES.TRACK]"
+      [routerLink]="[
+        order._id,
+        orderType === OrderType.Upcoming ? ROUTES.TRACK : ROUTES.FEEDBACK,
+      ]"
       class="w-full rounded-full bg-primary py-3.5 text-white shadow-orange-soft">
       {{
         orderType === OrderType.Upcoming && order.status !== 'delivered'
           ? 'Track Order'
-          : 'Re-Order'
+          : 'Rate'
       }}
     </button>
   </div>

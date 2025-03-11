@@ -1,4 +1,4 @@
-<div class="shopping-cart">
+<div class="shopping-cart" *ngIf="items.controls.length > 0; else emptyCart">
   <form [formGroup]="cartForm" (ngSubmit)="onSubmit()">
     <div
       *ngFor="let item of items.controls; let i = index"
@@ -75,3 +75,10 @@
     </button>
   </form>
 </div>
+
+<ng-template #emptyCart>
+  <div
+    class="absolute bottom-1/2 left-0 right-0 flex translate-y-1/2 justify-center text-xl font-semibold text-gray-manatee">
+    Your cart is empty
+  </div>
+</ng-template>

@@ -5,6 +5,7 @@
   @include centered-container($container-extra-large);
   flex: 1;
   margin-top: 100px;
+  margin-bottom: 84px;
 
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
@@ -44,6 +45,7 @@
     }
 
     &__card {
+      max-width: 270px;
       min-width: 270px;
       height: 100%;
     }

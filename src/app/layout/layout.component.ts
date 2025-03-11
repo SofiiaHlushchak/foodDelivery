@@ -21,6 +21,7 @@ import { RestaurantInterface } from '../shared/interfaces/restaurant.interface';
 import { FooterComponent } from '../shared/components/footer/footer.component';
 import { UserLoggedData } from '../shared/interfaces/auth.interface';
 import { AuthService } from '../services/auth.service';
+import { FoodItemInterface } from '../shared/interfaces/food-item.interface';
 
 @Component({
   selector: 'app-layout',
@@ -50,11 +51,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription = new Subscription();
 
   private restaurant?: RestaurantInterface;
+  private dish?: FoodItemInterface;
   user$: Observable<UserLoggedData | null> = this.authService.userSubject$;
 
   layoutConfig!: RouteConfigData;
   isSidebarOpen = false;
   isRestaurantFavourite?: boolean;
+  isDishFavourite?: boolean;
 
   @HostBinding('style.padding')
   get paddingStyle() {
@@ -78,15 +81,21 @@ export class LayoutComponent implements OnInit, OnDestroy {
   setLayoutConfig(): void {
     const route = this.getDeepestRoute(this.route);
     const routeData = route.snapshot.data;
-    const { restaurant } = routeData || {};
+    const { restaurant, dish } = routeData || {};
 
     this.restaurant = restaurant;
+    this.dish = dish;
     this.isRestaurantFavourite = this.restaurant?.['isFavourite'];
+    this.isDishFavourite = this.dish?.['isFavourite'];
     this.layoutConfig = { ...routeData };
   }
 
   toggleFavourite(): void {
-    this.isRestaurantFavourite = !this.isRestaurantFavourite;
+    if (this.restaurant) {
+      this.isRestaurantFavourite = !this.isRestaurantFavourite;
+    } else if (this.dish) {
+      this.isDishFavourite = !this.isDishFavourite;
+    }
   }
 
   toggleSidebar(): void {

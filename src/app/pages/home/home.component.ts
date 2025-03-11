@@ -14,6 +14,9 @@ import { FilterSidebarComponent } from '../../shared/components/filter-sidebar/f
 import { CATEGORIES } from '../../shared/constants/categories.const';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ResponsiveDirective } from '../../shared/directives/responsive.directive';
+import { SecondaryCardComponent } from '../../shared/components/secondary-card/secondary-card.component';
+import { DishesService } from '../../services/dishes.service';
+import { FoodItemInterface } from '../../shared/interfaces/food-item.interface';
 
 @Component({
   selector: 'app-home',
@@ -27,19 +30,23 @@ import { ResponsiveDirective } from '../../shared/directives/responsive.directiv
     ReactiveFormsModule,
     FilterSidebarComponent,
     ResponsiveDirective,
+    SecondaryCardComponent,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
   private restaurantsService = inject(RestaurantsService);
+  private dishesService = inject(DishesService);
   private fb = inject(FormBuilder);
   private destroyRef = inject(DestroyRef);
 
   searchForm!: FormGroup;
   restaurants$: Observable<RestaurantInterface[]> =
     this.restaurantsService.restaurants$;
+  dishes$: Observable<FoodItemInterface[]> = this.dishesService.dishes$;
   isLoading$: Observable<boolean> = inject(LoadingService).isLoading$;
+  topDishes: FoodItemInterface[] = [];
   isSidebarOpen = false;
   isFiltersSidebarOpen = false;
 
@@ -60,6 +67,11 @@ export class HomeComponent implements OnInit {
     });
 
     this.restaurantsService.getCachedRestaurants().subscribe();
+    this.dishesService.getCachedDishes().subscribe();
+
+    this.dishes$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(dishes => {
+      this.topDishes = this.getTopDishFromEachRestaurant(dishes);
+    });
 
     this.searchForm
       .get('searchQuery')!
@@ -80,6 +92,24 @@ export class HomeComponent implements OnInit {
 
   getCategoryValue(index: number): boolean {
     return this.searchForm.get('categories')?.value[index] || false;
+  }
+
+  getTopDishFromEachRestaurant(
+    dishes: FoodItemInterface[]
+  ): FoodItemInterface[] {
+    return dishes.reduce((topDishes: FoodItemInterface[], dish) => {
+      const index = topDishes.findIndex(
+        d => d.restaurantId === dish.restaurantId
+      );
+
+      if (index === -1) {
+        topDishes.push(dish);
+      } else if ((dish.rating ?? 0) > (topDishes[index].rating ?? 0)) {
+        topDishes[index] = dish;
+      }
+
+      return topDishes;
+    }, []);
   }
 
   applyFilters(updatedCategories?: boolean[]): void {
@@ -115,7 +145,10 @@ export class HomeComponent implements OnInit {
     this.isFiltersSidebarOpen = !this.isFiltersSidebarOpen;
   }
 
-  onToggleFavourite(itemId: string): void {
-    this.restaurantsService.toggleFavourite(itemId);
+  onToggleFavourite(itemId: string, type: CardTypeEnum): void {
+    (type === CardTypeEnum.Restaurant
+      ? this.restaurantsService
+      : this.dishesService
+    ).toggleFavourite(itemId);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleMapComponent } from '../../shared/components/google-map/google-map.component';
 import { Order } from '../../shared/interfaces/order.interface';
 import { OrderStatus } from '../../shared/enums/order-status.enum';
@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { UserLoggedData } from '../../shared/interfaces/auth.interface';
 import { AuthService } from '../../services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ROUTES } from '../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-track-order',
@@ -19,6 +20,7 @@ export class TrackOrderComponent implements OnInit {
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
 
   OrderStatus = OrderStatus;
 
@@ -63,11 +65,17 @@ export class TrackOrderComponent implements OnInit {
   }
 
   updateDistance(newDistance: number) {
-    this.distance = Math.round(newDistance);
+    this.distance = parseFloat(newDistance.toFixed(1));
   }
 
   updateOrderStatus(orderStatus: { status: OrderStatus; updatedAt: string }) {
     this.order.status = orderStatus.status;
     this.statusUpdatedAt[orderStatus.status] = orderStatus.updatedAt;
+
+    if (this.order.status === OrderStatus.Delivered) {
+      setTimeout(() => {
+        this.router.navigate([ROUTES.ORDERS, this.order._id, ROUTES.FEEDBACK]);
+      }, 2000);
+    }
   }
 }

@@ -6,16 +6,20 @@
   bottom: 0;
   left: 0;
   right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px;
-  font-size: 24px;
-  color: $gray-light;
+  background-color: white;
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.05);
 
-  .active i {
-    color: $primary-color;
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    font-size: 24px;
+    color: $gray-light;
+    @include centered-container($container-extra-large);
+
+    .active i {
+      color: $primary-color;
+    }
   }
-
-  @include centered-container($container-extra-large);
 }

@@ -1,6 +1,6 @@
 <div
   class="m-auto flex w-full flex-col justify-center sm:w-3/4 md:w-2/3 lg:w-3/5 xl:w-3/5 2xl:w-1/2">
-  <form [formGroup]="cardForm" (ngSubmit)="saveCard()" class="z-10 space-y-7">
+  <form [formGroup]="cardForm" (ngSubmit)="saveCard()" class="z-10 space-y-8">
     <div>
       <label for="name" class="block text-sm font-medium text-gray-manatee">
         Name
@@ -23,7 +23,12 @@
       <input
         id="number"
         formControlName="number"
-        class="mt-1 w-full rounded-lg border border-gray-light p-3 pr-14 outline-none focus:border-none focus:ring focus:ring-primary"
+        class="mt-1 w-full rounded-lg border-2 p-3 outline-none"
+        [ngClass]="{
+          'border-gray-light focus:border-primary':
+            !number.invalid || !number.touched,
+          'border-red-500': number.invalid && number.touched,
+        }"
         placeholder="XXXX XXXX XXXX XXXX"
         [mask]="'0000 0000 0000 0000'" />
 
@@ -36,10 +41,10 @@
       </div>
 
       <div *ngIf="number?.invalid && number?.touched">
-        <small class="absolute text-red-500">
+        <small class="absolute mt-1 text-red-500">
           {{
             cardForm.controls['number'].errors
-              | controlErrorHandler: 'Card Number'
+              | controlErrorHandler: 'Card number'
           }}
         </small>
       </div>
@@ -55,13 +60,18 @@
         <input
           id="expires"
           formControlName="expires"
-          class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary"
+          class="mt-1 w-full rounded-lg border-2 p-3 outline-none"
+          [ngClass]="{
+            'border-gray-light focus:border-primary':
+              !expires.invalid || !expires.touched,
+            'border-red-500': expires.invalid && expires.touched,
+          }"
           placeholder="MM/YY"
           maxlength="5"
           [dropSpecialCharacters]="false"
           [mask]="'00/00'" />
-        <div *ngIf="expires?.invalid && expires?.touched" class="text-red-500">
-          <small class="text-red-500">
+        <div *ngIf="expires?.invalid && expires?.touched">
+          <small class="absolute mt-1 text-red-500">
             {{
               cardForm.controls['expires'].errors
                 | controlErrorHandler: 'Expires'
@@ -78,11 +88,16 @@
           id="cvv"
           formControlName="cvv"
           type="password"
-          class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary"
+          class="mt-1 w-full rounded-lg border-2 p-3 outline-none"
+          [ngClass]="{
+            'border-gray-light focus:border-primary':
+              !cvv.invalid || !cvv.touched,
+            'border-red-500': cvv.invalid && cvv.touched,
+          }"
           placeholder="CVV"
           maxlength="3" />
-        <div *ngIf="cvv?.invalid && cvv?.touched" class="text-red-500">
-          <small class="text-red-500">
+        <div *ngIf="cvv?.invalid && cvv?.touched">
+          <small class="absolute mt-1 text-red-500">
             {{ cardForm.controls['cvv'].errors | controlErrorHandler: 'CVV' }}
           </small>
         </div>

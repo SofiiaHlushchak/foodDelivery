@@ -2,7 +2,7 @@ export interface RouteConfigData {
   headerTitle?: string;
   headerIcon?: boolean;
   headerIconClass?: string;
-  headerSubtitle?: string;
+  headerSubtitle?: boolean;
   headerPictureDisplay?: boolean;
   headerMenuButtonVisible?: boolean;
   headerBackButtonVisible?: boolean;
