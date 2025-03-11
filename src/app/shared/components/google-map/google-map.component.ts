@@ -92,7 +92,7 @@ export class GoogleMapComponent implements AfterViewInit, OnInit {
       });
     }
 
-    if (data.distance) {
+    if (data.distance !== null && data.distance !== undefined) {
       this.distanceChange.emit(data.distance);
     }
 
@@ -106,6 +106,10 @@ export class GoogleMapComponent implements AfterViewInit, OnInit {
 
     if (data.location && this.courierMarker) {
       this.courierMarker.position = data.location;
+
+      const map = this.googleMap?.googleMap as google.maps.Map;
+      map.panTo(data.location);
+      map.setZoom(15);
     }
   }
 

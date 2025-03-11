@@ -9,7 +9,7 @@
   <form
     [formGroup]="userProfileForm"
     (ngSubmit)="updateProfile()"
-    class="z-10 mt-11 space-y-6">
+    class="z-10 mt-11 space-y-8">
     <div>
       <label for="name" class="block text-sm font-medium text-gray-manatee">
         Full name
@@ -17,22 +17,26 @@
       <input
         id="name"
         formControlName="name"
-        class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
+        class="mt-1 w-full rounded-lg border-2 p-3 outline-none"
+        [ngClass]="{
+          'border-gray-light focus:border-primary':
+            !userProfileForm.controls['name'].invalid ||
+            !userProfileForm.controls['name'].touched,
+          'border-red-500':
+            userProfileForm.controls['name'].invalid &&
+            userProfileForm.controls['name'].touched,
+        }" />
       <div
         *ngIf="
-          userProfileForm.get('name')?.invalid &&
-          userProfileForm.get('name')?.touched
-        "
-        class="mt-1 text-sm text-red-500">
-        <span *ngIf="userProfileForm.get('name')?.errors?.['required']">
-          Full name is required.
-        </span>
-        <span *ngIf="userProfileForm.get('name')?.errors?.['minlength']">
-          Full name must be at least 3 characters long.
-        </span>
-        <span *ngIf="userProfileForm.get('name')?.errors?.['maxlength']">
-          Full name cannot be longer than 50 characters.
-        </span>
+          userProfileForm.controls['name'].invalid &&
+          userProfileForm.controls['name'].touched
+        ">
+        <small class="absolute mt-1 text-red-500">
+          {{
+            userProfileForm.controls['name'].errors
+              | controlErrorHandler: 'Name'
+          }}</small
+        >
       </div>
     </div>
     <div>
@@ -43,19 +47,26 @@
         id="email"
         formControlName="email"
         type="email"
-        class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
+        class="mt-1 w-full rounded-lg border-2 p-3 outline-none"
+        [ngClass]="{
+          'border-gray-light focus:border-primary':
+            !userProfileForm.controls['email'].invalid ||
+            !userProfileForm.controls['email'].touched,
+          'border-red-500':
+            userProfileForm.controls['email'].invalid &&
+            userProfileForm.controls['email'].touched,
+        }" />
       <div
         *ngIf="
-          userProfileForm.get('email')?.invalid &&
-          userProfileForm.get('email')?.touched
-        "
-        class="mt-1 text-sm text-red-500">
-        <span *ngIf="userProfileForm.get('email')?.errors?.['required']">
-          E-mail is required.
-        </span>
-        <span *ngIf="userProfileForm.get('email')?.errors?.['email']">
-          Please enter a valid e-mail address.
-        </span>
+          userProfileForm.controls['email'].invalid &&
+          userProfileForm.controls['email'].touched
+        ">
+        <small class="absolute mt-1 text-red-500">
+          {{
+            userProfileForm.controls['email'].errors
+              | controlErrorHandler: 'E-mail'
+          }}</small
+        >
       </div>
     </div>
 
@@ -129,16 +140,25 @@
         id="age"
         formControlName="age"
         type="number"
-        class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
+        class="mt-1 w-full rounded-lg border-2 p-3 outline-none"
+        [ngClass]="{
+          'border-gray-light focus:border-primary':
+            !userProfileForm.controls['age'].invalid ||
+            !userProfileForm.controls['age'].touched,
+          'border-red-500':
+            userProfileForm.controls['age'].invalid &&
+            userProfileForm.controls['age'].touched,
+        }" />
       <div
         *ngIf="
-          userProfileForm.get('age')?.invalid &&
-          userProfileForm.get('age')?.touched
-        "
-        class="mt-1 text-xs text-red-500">
-        <div *ngIf="userProfileForm.get('age')?.hasError('min')">
-          Age must be at least 16 years old.
-        </div>
+          userProfileForm.controls['age'].invalid &&
+          userProfileForm.controls['age'].touched
+        ">
+        <small class="absolute mt-1 text-red-500">
+          {{
+            userProfileForm.controls['age'].errors | controlErrorHandler: 'Age'
+          }}</small
+        >
       </div>
     </div>
 

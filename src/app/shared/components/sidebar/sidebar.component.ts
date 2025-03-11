@@ -33,7 +33,11 @@ export class SidebarComponent {
       icon: 'fa-solid fa-map-marker-alt',
       href: '/',
     },
-    { label: 'Payment Methods', icon: 'fa-solid fa-credit-card', href: '/' },
+    {
+      label: 'Payment Methods',
+      icon: 'fa-solid fa-credit-card',
+      href: `${ROUTES.PAYMENT}`,
+    },
     { label: 'Contact Us', icon: 'fa-solid fa-envelope', href: '/' },
     { label: 'Settings', icon: 'fa-solid fa-cog', href: '/' },
     { label: 'Helps & FAQs', icon: 'fa-solid fa-question-circle', href: '/' },

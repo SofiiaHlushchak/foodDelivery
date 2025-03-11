@@ -2,6 +2,7 @@ import { CommonModule, Location } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { RouteConfigData } from '../../interfaces/route-config-data.interface';
 import { CartService } from '../../../services/cart.service';
+import { UserLoggedData } from '../../interfaces/auth.interface';
 
 @Component({
   selector: 'app-header',
@@ -11,8 +12,10 @@ import { CartService } from '../../../services/cart.service';
   imports: [CommonModule],
 })
 export class HeaderComponent {
+  @Input() user: UserLoggedData | null = null;
   @Input() headerConfig!: RouteConfigData;
   @Input() isRestaurantFavourite?: boolean;
+  @Input() isDishFavourite?: boolean;
   @Output() sidebarToggle = new EventEmitter<void>();
   @Output() favouriteStatusChanged = new EventEmitter<void>();
 

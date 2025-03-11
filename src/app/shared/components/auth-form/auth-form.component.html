@@ -1,4 +1,4 @@
-<form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="space-y-6">
+<form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="space-y-8">
   <div *ngIf="!isLogin" class="flex flex-col">
     <label for="name" class="block text-sm font-medium text-gray-manatee">
       Full Name
@@ -7,12 +7,20 @@
       id="name"
       formControlName="name"
       type="text"
-      class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
+      class="mt-1 w-full rounded-lg border-2 p-3 outline-none"
+      [ngClass]="{
+        'border-gray-light focus:border-primary':
+          !authForm.controls['name'].invalid ||
+          !authForm.controls['name'].touched,
+        'border-red-500':
+          authForm.controls['name'].invalid &&
+          authForm.controls['name'].touched,
+      }" />
     <div
       *ngIf="
         authForm.controls['name'].invalid && authForm.controls['name'].touched
       ">
-      <small class="text-red-500">
+      <small class="absolute mt-1 text-red-500">
         {{
           authForm.controls['name'].errors | controlErrorHandler: 'Name'
         }}</small
@@ -28,12 +36,20 @@
       id="email"
       formControlName="email"
       type="email"
-      class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
+      class="mt-1 w-full rounded-lg border-2 p-3 outline-none"
+      [ngClass]="{
+        'border-gray-light focus:border-primary':
+          !authForm.controls['email'].invalid ||
+          !authForm.controls['email'].touched,
+        'border-red-500':
+          authForm.controls['email'].invalid &&
+          authForm.controls['email'].touched,
+      }" />
     <div
       *ngIf="
         authForm.controls['email'].invalid && authForm.controls['email'].touched
       ">
-      <small class="text-red-500">{{
+      <small class="absolute mt-1 text-red-500">{{
         authForm.controls['email'].errors | controlErrorHandler: 'Email'
       }}</small>
     </div>
@@ -47,13 +63,21 @@
       id="password"
       formControlName="password"
       type="password"
-      class="mt-1 w-full rounded-lg border border-gray-light p-3 outline-none focus:border-none focus:ring focus:ring-primary" />
+      class="mt-1 w-full rounded-lg border-2 p-3 outline-none"
+      [ngClass]="{
+        'border-gray-light focus:border-primary':
+          !authForm.controls['password'].invalid ||
+          !authForm.controls['password'].touched,
+        'border-red-500':
+          authForm.controls['password'].invalid &&
+          authForm.controls['password'].touched,
+      }" />
     <div
       *ngIf="
         authForm.controls['password'].invalid &&
         authForm.controls['password'].touched
       ">
-      <small class="text-red-500">
+      <small class="absolute mt-1 text-red-500">
         {{
           authForm.controls['password'].errors | controlErrorHandler: 'Password'
         }}
@@ -65,6 +89,6 @@
     type="submit"
     [disabled]="authForm.invalid"
     class="m-auto flex min-w-64 items-center justify-center rounded-full bg-primary px-16 py-6 text-base tracking-widest text-white shadow-main-button">
-    {{ isLogin ? 'Login' : ('Sign up' | uppercase) }}
+    {{ isLogin ? ('Login' | uppercase) : ('Sign up' | uppercase) }}
   </button>
 </form>

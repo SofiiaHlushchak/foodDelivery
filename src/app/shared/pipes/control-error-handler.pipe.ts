@@ -26,6 +26,9 @@ export class ControlErrorHandlerPipe implements PipeTransform {
         fieldName
       );
     }
+    if (errorKeys['min']) {
+      return `${fieldName} must be at least ${errorKeys['min'].min} years old.`;
+    }
 
     if (errorKeys['expired']) {
       return `${fieldName} cannot be in the past.`;

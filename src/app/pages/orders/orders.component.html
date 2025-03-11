@@ -18,8 +18,8 @@
   <div *ngIf="activeTab === OrderType.Upcoming" class="mt-4 space-y-4">
     <p
       *ngIf="upcomingOrders.length === 0"
-      class="text-center text-3xl font-semibold text-gray-manatee">
-      You don't have any upcoming orders yet.
+      class="absolute bottom-1/2 left-0 right-0 translate-y-1/2 text-center text-xl font-semibold text-gray-manatee">
+      You don't have any upcoming orders yet
     </p>
     <app-order-card
       *ngFor="let order of upcomingOrders"
@@ -30,7 +30,7 @@
   <div *ngIf="activeTab === OrderType.History" class="mt-4 space-y-4">
     <p
       *ngIf="historyOrders.length === 0"
-      class="text-center text-3xl font-semibold text-gray-manatee">
+      class="absolute bottom-1/2 left-0 right-0 translate-y-1/2 text-center text-xl font-semibold text-gray-manatee">
       Your order history is empty.
     </p>
     <app-order-card

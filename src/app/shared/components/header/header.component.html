@@ -20,8 +20,10 @@
     <button
       *ngIf="headerConfig.headerFavouriteButtonVisible"
       [ngClass]="{
-        'favorite-button--active': isRestaurantFavourite,
-        'favorite-button--inactive': !isRestaurantFavourite,
+        'favorite-button--active': isRestaurantFavourite || isDishFavourite,
+        'favorite-button--inactive': !(
+          isRestaurantFavourite || isDishFavourite
+        ),
       }"
       class="favorite-button mr-2.5"
       (click)="toggleFavourite()">
@@ -33,7 +35,12 @@
         {{ headerConfig.headerTitle }}
         <i class="fa-solid fa-chevron-down header__chevron"></i>
       </p>
-      <p class="header__subtitle">{{ headerConfig.headerSubtitle }}</p>
+      <p
+        class="header__subtitle"
+        *ngIf="headerConfig.headerSubtitle && user && user.deliveryAddress">
+        {{ user.deliveryAddress.region }}, {{ user.deliveryAddress.city }},
+        {{ user.deliveryAddress.street }}
+      </p>
     </div>
 
     <img

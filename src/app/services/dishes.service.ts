@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { FoodItemInterface } from '../shared/interfaces/food-item.interface';
@@ -21,6 +21,12 @@ export class DishesService {
       map(dishes => dishes.sort((a, b) => (a.price ?? 0) - (b.price ?? 0))),
       tap(dishes => this.dishesSubject.next(dishes))
     );
+  }
+
+  getCachedDishes(): Observable<FoodItemInterface[]> {
+    const cachedDishes = this.dishesSubject.getValue();
+
+    return cachedDishes?.length ? of(cachedDishes) : this.getDishes();
   }
 
   getDishById(id: string): Observable<FoodItemInterface> {

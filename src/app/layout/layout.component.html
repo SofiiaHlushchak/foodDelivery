@@ -4,9 +4,11 @@
   (sidebarToggle)="toggleSidebar()" />
 
 <app-header
+  [user]="user$ | async"
   [headerConfig]="layoutConfig"
   (sidebarToggle)="toggleSidebar()"
   [isRestaurantFavourite]="isRestaurantFavourite"
+  [isDishFavourite]="isDishFavourite"
   (favouriteStatusChanged)="toggleFavourite()" />
 
 <router-outlet></router-outlet>

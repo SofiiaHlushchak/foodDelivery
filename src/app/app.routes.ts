@@ -29,7 +29,7 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
         data: {
           headerTitle: 'Deliver to',
-          headerSubtitle: 'Pretty View Lane',
+          headerSubtitle: true,
           headerPictureDisplay: true,
           headerMenuButtonVisible: true,
           footerVisible: true,

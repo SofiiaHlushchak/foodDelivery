@@ -20,6 +20,7 @@ import { expirationDateValidator } from '../../shared/validators/validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CardTypePipe } from '../../shared/pipes/card-type.pipe';
 import { TooltipDirective } from '../../shared/directives/tooltip.directive';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-add-card',
@@ -48,6 +49,7 @@ export class AddCardComponent implements OnInit {
   private cardService = inject(CardService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
+  private notificationService = inject(NotificationService);
 
   user$: Observable<UserLoggedData | null> = this.authService.userSubject$;
 
@@ -104,6 +106,9 @@ export class AddCardComponent implements OnInit {
       };
 
       this.cardService.saveCard(cardData).subscribe(() => {
+        this.notificationService.showMessage(
+          'Your credit card has been successfully added!'
+        );
         this.router.navigate([`${ROUTES.PAYMENT}`]);
       });
     }

@@ -16,6 +16,7 @@ import { UserLoggedData } from '../../shared/interfaces/auth.interface';
 import { UserInfoComponent } from '../../shared/components/user-info/user-info.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
+import { ControlErrorHandlerPipe } from '../../shared/pipes/control-error-handler.pipe';
 
 @Component({
   selector: 'app-user-profile',
@@ -24,6 +25,7 @@ import { Observable } from 'rxjs';
     CommonModule,
     DecorativeShapesComponent,
     UserInfoComponent,
+    ControlErrorHandlerPipe,
   ],
   templateUrl: './user-profile.component.html',
   styles: [

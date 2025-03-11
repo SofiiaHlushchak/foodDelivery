@@ -30,7 +30,10 @@ export class SecondaryCardComponent {
     return this.card.data as FoodItemInterface;
   }
 
-  onToggleFavorite(itemId: string, type: CardTypeEnum) {
+  onToggleFavorite(event: Event, itemId: string, type: CardTypeEnum) {
+    event.preventDefault();
+    event.stopPropagation();
+
     this.toggleFavorite.emit({ itemId, type });
   }
 }

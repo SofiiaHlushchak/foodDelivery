@@ -67,8 +67,32 @@
             ><div class="restaurants__card">
               <app-primary-card
                 [card]="{ type: CardTypeEnum.Restaurant, data: restaurant }"
-                (toggleFavorite)="onToggleFavourite(restaurant.id)" /></div
+                (toggleFavorite)="
+                  onToggleFavourite(restaurant.id, CardTypeEnum.Restaurant)
+                " /></div
           ></a>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="restaurants" *ngIf="topDishes.length > 0">
+    <div class="restaurants__header">
+      <h2 class="title-secondary">Popular items</h2>
+    </div>
+    <div class="restaurants__carousel">
+      <div class="restaurants__list">
+        @for (dish of topDishes; track dish.id) {
+          <a [routerLink]="['/dishes', dish.id]">
+            <div class="h-full">
+              <app-secondary-card
+                [card]="{ type: CardTypeEnum.Dish, data: dish }"
+                (toggleFavorite)="
+                  onToggleFavourite(dish.id, CardTypeEnum.Dish)
+                ">
+              </app-secondary-card>
+            </div>
+          </a>
         }
       </div>
     </div>

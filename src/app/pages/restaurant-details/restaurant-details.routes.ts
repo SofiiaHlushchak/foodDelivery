@@ -19,6 +19,7 @@ export const restaurantDetailsRoutes: Routes = [
     data: {
       headerBackButtonVisible: true,
       headerFavouriteButtonVisible: true,
+      footerVisible: true,
     } as RouteConfigData,
   },
 ];
