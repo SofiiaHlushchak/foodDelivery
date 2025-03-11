@@ -97,29 +97,19 @@ export class HomeComponent implements OnInit {
   getTopDishFromEachRestaurant(
     dishes: FoodItemInterface[]
   ): FoodItemInterface[] {
-    const topDishes: FoodItemInterface[] = [];
-
-    dishes.forEach(dish => {
-      const existingRestaurantDish = topDishes.find(
+    return dishes.reduce((topDishes: FoodItemInterface[], dish) => {
+      const index = topDishes.findIndex(
         d => d.restaurantId === dish.restaurantId
       );
 
-      if (
-        !existingRestaurantDish ||
-        existingRestaurantDish.rating === undefined ||
-        dish.rating === undefined ||
-        existingRestaurantDish.rating < dish.rating
-      ) {
-        if (existingRestaurantDish) {
-          const index = topDishes.indexOf(existingRestaurantDish);
-          topDishes[index] = dish;
-        } else {
-          topDishes.push(dish);
-        }
+      if (index === -1) {
+        topDishes.push(dish);
+      } else if ((dish.rating ?? 0) > (topDishes[index].rating ?? 0)) {
+        topDishes[index] = dish;
       }
-    });
 
-    return topDishes;
+      return topDishes;
+    }, []);
   }
 
   applyFilters(updatedCategories?: boolean[]): void {
